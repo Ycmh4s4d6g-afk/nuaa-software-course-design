@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>管理员登录 - 酒店预订系统后台</title>
 
 <style>
@@ -91,8 +92,9 @@
 
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
 <script>
-// 切换逻辑
 function switchToPwd(){
     smsArea.style.display="none";
     pwdArea.style.display="block";
@@ -106,20 +108,26 @@ function switchToSMS(){
     btnPwd.classList.remove("active");
 }
 
-// 登录行为模拟（与业务逻辑对应）
-function loginPwd(){
-    if(!adminAccount.value.trim() || !adminPwd.value.trim())
-        return alert("请输入完整信息！");
-    alert("登录成功！（演示）");
-    location.href="adminIndex.html";
+async function loginPwd(){
+    const phone = adminAccount.value.trim();
+    const password = adminPwd.value.trim();
+    if(!phone || !password) return alert("请输入完整信息！");
+    try {
+        const json = await apiPost('/auth/login', { phone, password });
+        if (json.code !== 200) return alert(json.message || '登录失败');
+        if (json.data.role !== 'ADMIN') return alert('该账号不是管理员');
+        saveLoginUser(json.data);
+        alert('登录成功！');
+        location.href = 'adminIndex.html';
+    } catch (e) {
+        alert('无法连接后端，请检查 config.js 中的 API 地址及后端服务是否启动');
+    }
 }
 function loginSMS(){
-    if(!adminPhone.value.trim() || !code.value.trim())
-        return alert("请输入手机号与验证码！");
-    alert("登录成功！（演示）");
-    location.href="adminIndex.html";
+    alert('验证码登录暂未接入，请使用账号密码登录');
 }
 </script>
 
+    <script src="js/common.js"></script>
 </body>
 </html>

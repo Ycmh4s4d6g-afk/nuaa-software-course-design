@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>用户中心 - 酒店推荐预订系统</title>
 <style>
     body{margin:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;}
@@ -59,22 +60,10 @@
 <body>
 
 <!-- 顶部导航保持与前端统一 -->
-<header>
-    <div style="font-weight:600;font-size:18px;">🏨 用户中心</div>
-    <nav>
-        <a href="index.html">首页</a>
-        <a href="hotelList.html">查找酒店</a>
-        <a href="reservationList.html">我的预订</a>
-        <a href="collectionList.html">收藏夹</a>
-        <a href="changeUserInfo.html">编辑资料</a>
-        <a href="signin.html">退出登录</a>
-    </nav>
-</header>
-
 <div class="page">
 
     <!-- 顶部欢迎语 -->
-    <div class="greeting">欢迎回来！</div>
+    <div class="greeting" id="greeting">欢迎回来！</div>
     <div class="sub">你现在可以进行预订、收藏酒店、查看历史订单和发布评论。</div>
 
     <!-- 快捷入口宫格区 -->
@@ -118,8 +107,20 @@
 
     </div>
 
-    <footer>酒店推荐预订系统 · 普通用户中心页面示例</footer>
-</div>
+    </div>
 
+    <script src="js/config.js"></script>
+<script src="js/api.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+    (function () {
+        if (!localStorage.getItem('userId')) {
+            location.href = 'signin.html?redirect=customerIndex.html';
+            return;
+        }
+        var name = localStorage.getItem('username') || '用户';
+        document.getElementById('greeting').textContent = '欢迎回来，' + name + '！';
+    })();
+    </script>
 </body>
 </html>

@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>酒店推荐预订系统 - 首页</title>
+    <link rel="stylesheet" href="css/common.css">
+    <title>酒店推荐预订系统</title>
     <style>
         * {
             box-sizing: border-box;
@@ -150,6 +151,20 @@
             padding: 4px 10px;
             border-radius: 999px;
             font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .hero-tag:hover {
+            background: #dbeafe;
+        }
+        .section-more {
+            font-size: 13px;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .section-more:hover {
+            text-decoration: underline;
         }
 
         /* 推荐酒店区 */
@@ -234,7 +249,7 @@
         .quick-grid {
             margin-top: 26px;
             display: grid;
-            grid-template-columns: repeat(4,minmax(0,1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
         }
         .quick-card {
@@ -257,9 +272,19 @@
             color: #6b7280;
         }
         .quick-card-footer {
-            margin-top: 4px;
-            font-size: 12px;
-            color: #2563eb;
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: linear-gradient(120deg, #2563eb, #1d4ed8);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            align-self: flex-start;
+            transition: filter 0.2s;
+        }
+        .quick-card:hover .quick-card-footer {
+            filter: brightness(1.06);
         }
 
         /* 页脚 */
@@ -315,21 +340,6 @@
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <span>🏨</span>
-        <div>酒店推荐预订系统</div>
-    </div>
-    <nav>
-        <a href="index.html">首页</a>
-        <a href="hotelList.html">查找酒店</a>
-        <a href="reservationList.html">我的预订</a>
-        <a href="collectionList.html">收藏夹</a>
-        <a href="signin.html" class="nav-auth">登录 / 注册</a>
-        <a href="adminSignin.html">管理员入口</a>
-    </nav>
-</header>
-
 <div class="page">
 
     <!-- 顶部搜索 + 简要介绍 -->
@@ -366,19 +376,19 @@
 
         <div class="hero-right">
             <div class="hero-stat">
-                最近 30 天已处理 <strong>1280+</strong> 条预订请求，平均确认时间 <strong>2.3s</strong>。
+                支持<strong>在线预订</strong>、<strong>安全支付</strong>与<strong>订单管理</strong>，入住流程一站完成。
             </div>
             <div class="hero-stat">
                 热门目的地：
                 <div class="hero-tags">
-                    <span class="hero-tag">上海 · 外滩</span>
-                    <span class="hero-tag">北京 · 三里屯</span>
-                    <span class="hero-tag">南京 · 夫子庙</span>
-                    <span class="hero-tag">杭州 · 西湖</span>
+                    <a class="hero-tag" href="hotelList.html?city=上海">上海</a>
+                    <a class="hero-tag" href="hotelList.html?city=北京">北京</a>
+                    <a class="hero-tag" href="hotelList.html?city=南京">南京</a>
+                    <a class="hero-tag" href="hotelList.html?city=杭州">杭州</a>
                 </div>
             </div>
             <div class="hero-stat">
-                推荐依据：你的浏览记录、收藏酒店、历史评分等行为数据综合得到。
+                智能推荐结合您的浏览、收藏与评分偏好，为您精选合适酒店。
             </div>
         </div>
     </section>
@@ -386,123 +396,75 @@
     <!-- 推荐酒店卡片 -->
     <div class="section-title">
         <h2>为你推荐</h2>
-        <span>根据你的偏好与热门趋势生成推荐列表（示意）</span>
+        <span>根据您的偏好与热门趋势，为您精选优质酒店</span>
     </div>
 
-    <section class="hotel-grid">
-        <!-- 卡片1 -->
-        <div class="hotel-card">
-            <div class="hotel-image">
-                <!-- 这里后面可替换成 <img src="xxx.jpg"> -->
-                <img src="紫峰大厦.jpg" alt="紫峰大厦酒店" style="width:100%; height:100%; object-fit:cover;">
-            </div>
-            <div class="hotel-body">
-                <div class="hotel-name">南京云栖假日酒店（示例）</div>
-                <div class="hotel-meta">鼓楼区 · 近南京大学 · 含双早 · 地铁 500m</div>
-                <div class="hotel-bottom">
-                    <div>
-                        <span style="color:#f97316;">⭐ 4.7</span>
-                        <span style="font-size:12px;color:#6b7280;"> · 328条评价</span>
-                    </div>
-                    <div class="hotel-price">¥ 468 起</div>
-                </div>
-                <div class="hotel-bottom">
-                    <button class="hotel-btn" onclick="location.href='hotelDetail.html'">查看详情</button>
-                    <button class="hotel-btn" onclick="location.href='createReservation.html'">立即预订</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 卡片2 -->
-        <div class="hotel-card">
-            <div class="hotel-image">
-                <img src="上海外滩.jpg" alt="上海外滩酒店" style="width:100%; height:100%; object-fit:cover;">
-            </div>
-            <div class="hotel-body">
-                <div class="hotel-name">上海外滩星程酒店（示例）</div>
-                <div class="hotel-meta">黄浦区 · 外滩旁 · 商务出行优选</div>
-                <div class="hotel-bottom">
-                    <div>
-                        <span style="color:#f97316;">⭐ 4.5</span>
-                        <span style="font-size:12px;color:#6b7280;"> · 512条评价</span>
-                    </div>
-                    <div class="hotel-price">¥ 598 起</div>
-                </div>
-                <div class="hotel-bottom">
-                    <button class="hotel-btn" onclick="location.href='hotelDetail.html'">查看详情</button>
-                    <button class="hotel-btn" onclick="location.href='createReservation.html'">立即预订</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 卡片3 -->
-        <div class="hotel-card">
-            <div class="hotel-image">
-                <img src="杭州西湖.jpg" alt="杭州西湖酒店" style="width:100%; height:100%; object-fit:cover;">
-            </div>
-            <div class="hotel-body">
-                <div class="hotel-name">杭州西湖云舍民宿（示例）</div>
-                <div class="hotel-meta">西湖区 · 临湖景观 · 含早餐</div>
-                <div class="hotel-bottom">
-                    <div>
-                        <span style="color:#f97316;">⭐ 4.9</span>
-                        <span style="font-size:12px;color:#6b7280;"> · 210条评价</span>
-                    </div>
-                    <div class="hotel-price">¥ 388 起</div>
-                </div>
-                <div class="hotel-bottom">
-                    <button class="hotel-btn" onclick="location.href='hotelDetail.html'">查看详情</button>
-                    <button class="hotel-btn" onclick="location.href='createReservation.html'">立即预订</button>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section class="hotel-grid" id="recommendGrid"></section>
 
     <!-- 快捷入口模块 -->
     <div class="section-title">
         <h2>快捷入口</h2>
-        <span>直接跳转到系统的关键功能模块，方便答辩展示</span>
+        <span>常用功能一键直达</span>
     </div>
 
     <section class="quick-grid">
-        <a class="quick-card" href="signin.html">
-            <div class="quick-card-title">登录 / 注册</div>
+        <a class="quick-card" href="hotelList.html">
+            <div class="quick-card-title">查找酒店</div>
             <div class="quick-card-desc">
-                进入账户系统，体验注册、登录、修改信息、找回密码和注销功能。
+                浏览各城市优质酒店，按条件筛选并查看房型详情。
             </div>
-            <div class="quick-card-footer">点击进入 signin.html / signupCustomer.html</div>
+            <span class="quick-card-footer">查看酒店</span>
+        </a>
+
+        <a class="quick-card" href="signin.html">
+            <div class="quick-card-title">账户中心</div>
+            <div class="quick-card-desc">
+                登录或注册账户，管理个人信息、密码与安全设置。
+            </div>
+            <span class="quick-card-footer">立即登录</span>
         </a>
 
         <a class="quick-card" href="reservationList.html">
             <div class="quick-card-title">我的预订</div>
             <div class="quick-card-desc">
-                查看当前和历史预订记录，支持修改预订、取消预订，展示预订状态。
+                查看当前与历史订单，支持修改、取消与在线支付。
             </div>
-            <div class="quick-card-footer">跳转到 reservationList.html</div>
+            <span class="quick-card-footer">我的预订</span>
         </a>
 
         <a class="quick-card" href="collectionList.html">
-            <div class="quick-card-title">收藏酒店</div>
+            <div class="quick-card-title">我的收藏</div>
             <div class="quick-card-desc">
-                展示用户收藏的酒店列表，支持取消收藏、跳转至酒店详情。
+                管理收藏的酒店，快速查看详情并完成预订。
             </div>
-            <div class="quick-card-footer">跳转到 collectionList.html</div>
+            <span class="quick-card-footer">我的收藏</span>
         </a>
 
         <a class="quick-card" href="listPost.html">
-            <div class="quick-card-title">评价与评论</div>
+            <div class="quick-card-title">酒店评价</div>
             <div class="quick-card-desc">
-                查看酒店评价内容，后续页面支持发布评论、编辑、删除和审核。
+                浏览真实住客评价，分享您的入住体验。
             </div>
-            <div class="quick-card-footer">跳转到 listPost.html</div>
+            <span class="quick-card-footer">查看评论</span>
         </a>
     </section>
 
 </div>
 
-<footer>
-    酒店推荐预订系统 · 课程项目界面示例 · 仅用于教学与答辩演示
-</footer>
-
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadRecommend() {
+    try {
+        var json = await apiGet('/hotels/recommended?sortBy=rating&limit=3');
+        if (json.code !== 200) return;
+        document.getElementById('recommendGrid').innerHTML = (json.data || []).map(function(h) {
+            return '<div class="hotel-card"><div class="hotel-image"><img src="' + hotelImage(h.id) + '" style="width:100%;height:100%;object-fit:cover;"></div><div class="hotel-body"><div class="hotel-name">' + h.hotelName + '</div><div class="hotel-meta">' + h.city + ' · ' + h.hotelType + ' · 收藏' + (h.collectionCount || 0) + '</div><div class="hotel-bottom"><div><span style="color:#f97316;">⭐ ' + h.rating + '</span></div><div class="hotel-price">¥ ' + h.minPrice + ' 起</div></div><div class="hotel-bottom"><button class="hotel-btn" onclick="location.href=\'hotelDetail.html?id=' + h.id + '\'">查看详情</button><button class="hotel-btn" onclick="location.href=\'createReservation.html?hotelId=' + h.id + '\'">立即预订</button></div></div></div>';
+        }).join('');
+    } catch (e) {}
+}
+loadRecommend();
+</script>
 </body>
 </html>

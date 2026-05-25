@@ -2,132 +2,108 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
 <title>酒店列表 - 酒店预订系统</title>
-
 <style>
     body{margin:0;background:#f5f7fa;font-family:"Segoe UI","Noto Sans SC";}
-    header{
-        background:linear-gradient(120deg,#3b82f6,#2563eb);
-        padding:14px 36px;color:white;
-        display:flex;justify-content:space-between;align-items:center;
-    }
-    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
-    header a:hover{opacity:.85;}
-
-    /* 页面主体 */
     .page{max-width:1200px;margin:40px auto;padding:0 26px;}
-
     .title{font-size:22px;font-weight:600;margin-bottom:6px;}
     .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
-
-    /* 酒店卡片布局 */
-    .grid{
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:26px;
-    }
-    .card{
-        background:white;border-radius:16px;
-        overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.07);
-        transition:.25s;cursor:pointer;
-    }
+    .filter-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;}
+    .filter-bar input,.filter-bar select{padding:8px 12px;border-radius:8px;border:1px solid #d4d4d8;font-size:14px;}
+    .filter-bar button{padding:8px 16px;border:none;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+    .card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.07);transition:.25s;}
     .card:hover{transform:translateY(-5px);}
-
     .img-box{height:200px;overflow:hidden;}
-    .img-box img{
-        width:100%;height:100%;object-fit:cover;transition:.3s;
-    }
-    .card:hover img{transform:scale(1.05);}
-
+    .img-box img{width:100%;height:100%;object-fit:cover;}
     .info{padding:15px 18px;}
     .name{font-size:17px;font-weight:600;margin-bottom:4px;}
     .meta{font-size:13px;color:#6b7280;margin-bottom:6px;}
-    .rate{color:#f97316;font-weight:700;margin-right:5px;}
+    .rate{color:#f97316;font-weight:700;}
     .price{color:#2563eb;font-weight:700;}
-
-    .btn-area{
-        padding:12px 18px;border-top:1px solid #e5e7eb;
-        display:flex;justify-content:space-between;
-    }
-    .btn{
-        padding:8px 16px;border-radius:6px;font-size:13px;
-        border:none;cursor:pointer;transition:.2s;
-    }
+    .btn-area{padding:12px 18px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;}
+    .btn{padding:8px 16px;border-radius:6px;font-size:13px;border:none;cursor:pointer;}
     .detail{background:#2563eb;color:white;}
-    .detail:hover{filter:brightness(1.08);}
     .book{background:#22c55e;color:white;}
-    .book:hover{filter:brightness(1.08);}
+    .empty{text-align:center;padding:40px;color:#64748b;grid-column:1/-1;}
 </style>
 </head>
-
 <body>
-
-<header>
-    <div style="font-weight:600;font-size:18px;">🏨 酒店列表</div>
-    <nav>
-        <a href="index.html">首页</a>
-        <a href="customerIndex.html">用户主页</a>
-        <a href="reservationList.html">我的预订</a>
-        <a href="collectionList.html">收藏夹</a>
-    </nav>
-</header>
 
 <div class="page">
     <div class="title">热门酒店推荐</div>
-    <div class="sub">为你精选品质住宿，支持在线预订与收藏</div>
+    <div class="sub">数据来自后端接口，支持筛选查询</div>
 
-    <div class="grid">
-
-        <!-- 酒店1：杭州西湖民宿 -->
-        <div class="card">
-            <div class="img-box"><img src="杭州西湖.jpg"></div>
-            <div class="info">
-                <div class="name">杭州西湖云舍民宿</div>
-                <div class="meta">杭州市 · 临湖观景 · 休闲推荐</div>
-                <div>
-                    <span class="rate">⭐ 4.7</span> | ￥<span class="price">520 起/晚</span>
-                </div>
-            </div>
-            <div class="btn-area">
-                <button class="btn detail" onclick="location.href='hotelDetail.html'">查看详情</button>
-                <button class="btn book" onclick="location.href='createReservation.html'">立即预订</button>
-            </div>
-        </div>
-
-        <!-- 酒店2：上海外滩 -->
-        <div class="card">
-            <div class="img-box"><img src="上海外滩.jpg"></div>
-            <div class="info">
-                <div class="name">上海外滩星程酒店</div>
-                <div class="meta">外滩 · 黄浦区中心 · 商旅首选</div>
-                <div>
-                    <span class="rate">⭐ 4.6</span> | ￥<span class="price">598 起/晚</span>
-                </div>
-            </div>
-            <div class="btn-area">
-                <button class="btn detail" onclick="location.href='hotelDetail.html'">查看详情</button>
-                <button class="btn book" onclick="location.href='createReservation.html'">立即预订</button>
-            </div>
-        </div>
-
-        <!-- 酒店3：南京紫峰大厦 -->
-        <div class="card">
-            <div class="img-box"><img src="紫峰大厦.jpg"></div>
-            <div class="info">
-                <div class="name">南京紫峰大厦精选酒店</div>
-                <div class="meta">玄武区核心 · 地标视野 · 交通便利</div>
-                <div>
-                    <span class="rate">⭐ 4.8</span> | ￥<span class="price">488 起/晚</span>
-                </div>
-            </div>
-            <div class="btn-area">
-                <button class="btn detail" onclick="location.href='hotelDetail.html'">查看详情</button>
-                <button class="btn book" onclick="location.href='createReservation.html'">立即预订</button>
-            </div>
-        </div>
-
+    <div class="filter-bar">
+        <input type="text" id="city" placeholder="城市，如：杭州">
+        <input type="text" id="keyword" placeholder="关键词">
+        <input type="number" id="maxPrice" placeholder="价格上限">
+        <select id="sortBy">
+            <option value="rating">按评分</option>
+            <option value="price">按价格</option>
+            <option value="collections">按收藏量</option>
+        </select>
+        <button onclick="loadHotels()">搜索</button>
     </div>
+
+    <div class="grid" id="hotelGrid"></div>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+function renderHotels(records) {
+    const grid = document.getElementById('hotelGrid');
+    if (!records || records.length === 0) {
+        grid.innerHTML = '<div class="empty">暂无符合条件的酒店</div>';
+        return;
+    }
+    grid.innerHTML = records.map(function(h) {
+        return '<div class="card">' +
+            '<div class="img-box"><img src="' + hotelImage(h.id) + '" alt="' + h.hotelName + '"></div>' +
+            '<div class="info">' +
+            '<div class="name">' + h.hotelName + '</div>' +
+            '<div class="meta">' + h.city + ' · ' + h.hotelType + ' · ' + h.address + '</div>' +
+            '<div><span class="rate">⭐ ' + h.rating + '</span> | ￥<span class="price">' + h.minPrice + ' 起/晚</span></div>' +
+            '</div>' +
+            '<div class="btn-area">' +
+            '<button class="btn detail" onclick="location.href=\'hotelDetail.html?id=' + h.id + '\'">查看详情</button>' +
+            '<button class="btn book" onclick="location.href=\'createReservation.html?hotelId=' + h.id + '\'">立即预订</button>' +
+            '</div></div>';
+    }).join('');
+}
+
+async function loadHotels() {
+    var city = document.getElementById('city').value.trim();
+    var keyword = document.getElementById('keyword').value.trim();
+    var maxPrice = document.getElementById('maxPrice').value.trim();
+    var sortBy = document.getElementById('sortBy').value;
+    var url = '/hotels?page=1&size=20';
+    if (city) url += '&city=' + encodeURIComponent(city);
+    if (keyword) url += '&keyword=' + encodeURIComponent(keyword);
+    if (maxPrice) url += '&maxPrice=' + encodeURIComponent(maxPrice);
+    if (sortBy) url += '&sortBy=' + encodeURIComponent(sortBy);
+
+    try {
+        var json = await apiGet(url);
+        if (json.code !== 200) {
+            alert(json.message || '加载失败');
+            return;
+        }
+        renderHotels(json.data.records);
+    } catch (e) {
+        alert('无法连接后端，请确认 Spring Boot 已启动');
+    }
+}
+
+window.onload = function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('city')) document.getElementById('city').value = params.get('city');
+    if (params.get('maxPrice')) document.getElementById('maxPrice').value = params.get('maxPrice');
+    loadHotels();
+};
+</script>
 </body>
 </html>

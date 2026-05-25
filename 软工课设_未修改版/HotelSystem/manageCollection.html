@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>收藏管理后台 - 酒店预订系统</title>
 
 <style>
@@ -48,70 +49,37 @@
 
 <body>
 
-<header>
-    <div style="font-size:18px;font-weight:600;">🛠 收藏记录管理后台</div>
-    <nav>
-        <a href="adminIndex.html">管理员首页</a>
-        <a href="index.html">系统首页</a>
-    </nav>
-</header>
-
 <div class="page">
 
     <div class="title">用户收藏酒店列表</div>
     <div class="sub">管理员可查看与删除收藏记录</div>
 
     <table id="table">
-        <tr>
-            <th>用户名</th>
-            <th>收藏酒店</th>
-            <th>酒店价格</th>
-            <th>评分</th>
-            <th>操作</th>
-        </tr>
-
-        <tr>
-            <td>小陈</td>
-            <td>杭州西湖云舍民宿</td>
-            <td>￥520</td>
-            <td>4.7</td>
-            <td>
-                <button class="look" onclick="location.href='hotelDetail.html'">查看酒店</button>
-                <button class="del" onclick="removeRow(this)">删除记录</button>
-            </td>
-        </tr>
-
-        <tr>
-            <td>李亮</td>
-            <td>上海外滩星程酒店</td>
-            <td>￥598</td>
-            <td>4.6</td>
-            <td>
-                <button class="look" onclick="location.href='hotelDetail.html'">查看酒店</button>
-                <button class="del" onclick="removeRow(this)">删除记录</button>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Alice</td>
-            <td>南京紫峰大厦精选酒店</td>
-            <td>￥488</td>
-            <td>4.8</td>
-            <td>
-                <button class="look" onclick="location.href='hotelDetail.html'">查看酒店</button>
-                <button class="del" onclick="removeRow(this)">删除记录</button>
-            </td>
-        </tr>
-
+        <tr><th>用户名</th><th>收藏酒店</th><th>城市</th><th>最低价</th><th>操作</th></tr>
     </table>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
 <script>
-function removeRow(btn){
-    btn.parentNode.parentNode.remove();
-    alert("收藏记录已删除（演示）");
+async function load() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/collections?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    var rows = (json.data.records || []).map(function(c) {
+        var h = c.hotel || {};
+        return '<tr><td>' + (c.username || c.userId) + '</td><td>' + (h.hotelName || '-') + '</td><td>' + (h.city || '-') + '</td><td>￥' + (h.minPrice || '-') + '</td><td><button class="look" onclick="location.href=\'hotelDetail.html?id=' + c.hotelId + '\'">查看酒店</button><button class="del" onclick="removeRow(' + c.id + ')">删除</button></td></tr>';
+    }).join('');
+    document.getElementById('table').innerHTML = '<tr><th>用户名</th><th>收藏酒店</th><th>城市</th><th>最低价</th><th>操作</th></tr>' + rows;
 }
+async function removeRow(id) {
+    if (!confirm('确认删除收藏记录？')) return;
+    var json = await apiDelete('/admin/collections/' + id);
+    if (json.code !== 200) { alert(json.message); return; }
+    load();
+}
+load();
 </script>
-
 </body>
 </html>

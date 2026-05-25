@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>用户管理后台 - 酒店预订系统</title>
 
 <style>
@@ -60,14 +61,6 @@
 
 <body>
 
-<header>
-    <div>👤 用户管理后台</div>
-    <nav>
-        <a href="adminIndex.html">返回首页</a>
-        <a href="adminSignin.html">退出登录</a>
-    </nav>
-</header>
-
 <!-- 🔎 用户搜索框 -->
 <div class="search-box">
     <input id="searchInput" type="text" placeholder="输入姓名 / 手机号 / 邮箱 搜索用户">
@@ -81,61 +74,44 @@
         <th>用户名</th>
         <th>邮箱</th>
         <th>手机号</th>
+        <th>角色</th>
         <th>状态</th>
         <th>操作</th>
     </tr>
-
-    <tr>
-        <td>U20250101</td>
-        <td>李明</td>
-        <td>chen@mail.com</td>
-        <td>13812345678</td>
-        <td style="color:#16a34a;font-weight:600;">正常</td>
-        <td>
-            <button class="edit" onclick="location.href='changeUserInfo.html'">修改</button>
-            <button class="del" onclick="deleteUser(this)">删除</button>
-        </td>
-    </tr>
-
-    <tr>
-        <td>U20240215</td>
-        <td>王敏</td>
-        <td>min@mail.com</td>
-        <td>13699881562</td>
-        <td style="color:#dc2626;font-weight:600;">已注销</td>
-        <td>
-            <button class="edit" onclick="location.href='changeUserInfo.html'">修改</button>
-            <button class="del" onclick="deleteUser(this)">删除</button>
-        </td>
-    </tr>
-
-    <tr>
-        <td>U20250111</td>
-        <td>Alice</td>
-        <td>alice@gmail.com</td>
-        <td>13755664421</td>
-        <td style="color:#16a34a;font-weight:600;">正常</td>
-        <td>
-            <button class="edit" onclick="location.href='changeUserInfo.html'">修改</button>
-            <button class="del" onclick="deleteUser(this)">删除</button>
-        </td>
-    </tr>
 </table>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
 <script>
-function searchUser(){
-    let keyword = searchInput.value.trim();
-    if(keyword === "") return alert("请输入搜索关键字！");
-    alert("正在搜索包含：" + keyword + " 的用户记录（演示）");
+async function loadUsers() {
+    if (!requireAdmin()) return;
+    var kw = document.getElementById('searchInput').value.trim();
+    var url = '/admin/users?page=1&size=50';
+    if (kw) url += '&keyword=' + encodeURIComponent(kw);
+    var json = await apiGetAuth(url);
+    if (json.code !== 200) { alert(json.message || '加载失败'); return; }
+    var tbody = '';
+    (json.data.records || []).forEach(function(u) {
+        var stColor = u.status === 'NORMAL' ? '#16a34a' : (u.status === 'DISABLED' ? '#dc2626' : '#6b7280');
+        var btn = u.status === 'NORMAL'
+            ? '<button class="del" onclick="toggleStatus(' + u.id + ',\'DISABLED\')">禁用</button>'
+            : (u.status === 'DISABLED' ? '<button class="edit" onclick="toggleStatus(' + u.id + ',\'NORMAL\')">恢复</button>' : '-');
+        if (u.role === 'ADMIN') btn = '-';
+        tbody += '<tr><td>' + u.id + '</td><td>' + u.username + '</td><td>' + (u.email || '-') + '</td><td>' + u.phone + '</td><td>' + userRoleText(u.role) + '</td><td style="color:' + stColor + ';font-weight:600;">' + userStatusText(u.status) + '</td><td>' + btn + '</td></tr>';
+    });
+    document.getElementById('userTable').innerHTML = '<tr><th>用户ID</th><th>用户名</th><th>邮箱</th><th>手机号</th><th>角色</th><th>状态</th><th>操作</th></tr>' + tbody;
 }
 
-function deleteUser(btn){
-    if(confirm("⚠ 确认删除该用户？删除后无法恢复！")){
-        btn.parentNode.parentNode.remove();
-        alert("已删除");
-    }
+async function toggleStatus(id, status) {
+    if (!confirm(status === 'DISABLED' ? '确认禁用该用户？' : '确认恢复该用户？')) return;
+    var json = await apiPut('/admin/users/' + id + '/status', { status: status });
+    if (json.code !== 200) { alert(json.message || '操作失败'); return; }
+    loadUsers();
 }
+
+function searchUser() { loadUsers(); }
+loadUsers();
 </script>
-
 </body>
 </html>

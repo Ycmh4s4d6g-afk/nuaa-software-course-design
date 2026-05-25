@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>注册账户 - 酒店推荐预订系统</title>
 
 <style>
@@ -53,15 +54,6 @@
 <body>
 
 <!-- 顶部导航（保持系统一致性） -->
-<header>
-    <div style="font-size:18px;font-weight:600;">🏨 酒店预订系统</div>
-    <nav>
-        <a href="index.html">首页</a>
-        <a href="hotelList.html">酒店查询</a>
-        <a href="signin.html">登录</a>
-    </nav>
-</header>
-
 <!-- 注册主体页面 -->
 <div class="container">
     <div class="title">创建新账户</div>
@@ -91,20 +83,45 @@
     </div>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
 <script>
-/* 🔹 注册逻辑，仅用于页面演示 */
-function register(){
-    let p1 = document.getElementById("pwd1").value;
-    let p2 = document.getElementById("pwd2").value;
+async function register() {
+    const phone = document.getElementById('phone').value.trim();
+    const p1 = document.getElementById('pwd1').value;
+    const p2 = document.getElementById('pwd2').value;
 
-    if(p1 !== p2){
-        alert("两次密码不一致！请重新输入");
+    if (!phone) {
+        alert('请输入手机号');
         return;
     }
-    alert("注册成功！（演示）即将跳转登录页面");
-    location.href="signin.html";
+    if (p1.length < 6) {
+        alert('密码至少6位');
+        return;
+    }
+    if (p1 !== p2) {
+        alert('两次密码不一致！请重新输入');
+        return;
+    }
+
+    try {
+        const json = await apiPost('/auth/register', {
+            username: '用户' + phone.slice(-4),
+            phone: phone,
+            password: p1
+        });
+        if (json.code !== 200) {
+            alert(json.message || '注册失败');
+            return;
+        }
+        alert('注册成功！请登录');
+        location.href = 'signin.html';
+    } catch (e) {
+        alert('无法连接后端，请检查 config.js 中的 API 地址及后端服务是否启动');
+    }
 }
 </script>
 
+    <script src="js/common.js"></script>
 </body>
 </html>

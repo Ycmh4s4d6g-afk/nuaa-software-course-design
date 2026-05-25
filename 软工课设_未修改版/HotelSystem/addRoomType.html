@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>添加房型 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    .box{width:650px;margin:50px auto;background:white;padding:38px 50px;border-radius:20px;box-shadow:0 6px 20px rgba(0,0,0,.08);}
+    .title{font-size:24px;font-weight:700;margin-bottom:8px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
+    .field{margin-bottom:18px;}
+    .field label{display:block;color:#475569;font-size:13px;margin-bottom:6px;}
+    .field input,.field textarea,.field select{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #d4d4d8;font-size:14px;box-sizing:border-box;}
+    textarea{resize:none;height:90px;}
+    .btn{width:49%;padding:12px;border-radius:8px;font-size:15px;font-weight:600;border:none;margin-top:10px;cursor:pointer;}
+    .save{background:#22c55e;color:white;}
+    .back{background:#6b7280;color:white;}
+</style>
+</head>
+<body>
+<div class="box">
+    <div class="title">添加房型</div>
+    <div class="sub" id="hotelSub"></div>
+    <div class="field"><label>房型名称 *</label><input type="text" id="roomTypeName" placeholder="如：商务大床房"></div>
+    <div class="field"><label>床型</label><input type="text" id="bedType" value="1张大床"></div>
+    <div class="field"><label>可入住人数 *</label><input type="number" id="capacity" value="2" min="1"></div>
+    <div class="field"><label>房间总数 *</label><input type="number" id="totalRooms" value="10" min="1"></div>
+    <div class="field"><label>每晚价格（元）*</label><input type="number" id="price" step="0.01" placeholder="499"></div>
+    <div class="field"><label>是否含早餐</label>
+        <select id="breakfastIncluded"><option value="1">含早餐</option><option value="0">不含早餐</option></select>
+    </div>
+    <div class="field"><label>房型说明</label><textarea id="description" placeholder="面积、景观、设施等"></textarea></div>
+    <button class="btn save" onclick="save()">保存房型</button>
+    <button class="btn back" onclick="goBack()">返回</button>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+var hotelId = getQueryParam('hotelId');
+var hotelName = decodeURIComponent(getQueryParam('hotelName') || '');
+document.getElementById('hotelSub').textContent = hotelName || ('酒店 #' + hotelId);
+
+function goBack() {
+    location.href = 'manageRoomTypes.html?hotelId=' + hotelId + '&hotelName=' + encodeURIComponent(hotelName);
+}
+
+async function save() {
+    if (!requireAdmin() || !hotelId) { alert('缺少酒店ID'); return; }
+    var body = {
+        roomTypeName: document.getElementById('roomTypeName').value.trim(),
+        bedType: document.getElementById('bedType').value.trim(),
+        capacity: parseInt(document.getElementById('capacity').value, 10),
+        totalRooms: parseInt(document.getElementById('totalRooms').value, 10),
+        price: parseFloat(document.getElementById('price').value),
+        breakfastIncluded: parseInt(document.getElementById('breakfastIncluded').value, 10),
+        description: document.getElementById('description').value.trim()
+    };
+    if (!body.roomTypeName || isNaN(body.capacity) || isNaN(body.totalRooms) || isNaN(body.price)) {
+        alert('请填写房型名称、人数、房间数与价格');
+        return;
+    }
+    var json = await apiPost('/admin/hotels/' + hotelId + '/room-types', body);
+    if (json.code !== 200) { alert(json.message || '添加失败'); return; }
+    alert('房型已添加');
+    goBack();
+}
+if (!requireAdmin() || !hotelId) { /* requireAdmin handles redirect */ }
+</script>
+</body>
+</html>

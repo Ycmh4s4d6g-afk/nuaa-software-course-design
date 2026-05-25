@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>用户登录 - 酒店推荐预订系统</title>
 <style>
     body{
@@ -55,15 +56,6 @@
 <body>
 
 <!-- 🔷 顶部导航，与首页风格统一 -->
-<header>
-    <div style="font-size:18px;font-weight:600;letter-spacing:.5px;">🏨 酒店预订系统</div>
-    <nav>
-        <a href="index.html">首页</a>
-        <a href="hotelList.html">酒店查询</a>
-        <a href="reservationList.html">我的预订</a>
-    </nav>
-</header>
-
 <!-- 🔷 登录主体区域 -->
 <div class="container">
     <div class="title">欢迎回来</div>
@@ -89,14 +81,40 @@
     </div>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
 <script>
-/* 🔹 简易逻辑：直接跳转用户主页 */
-function login(){
-    // 未来可接后端校验，这里用于界面演示
-    alert("登录成功！（演示）正在跳转用户首页...");
-    location.href="customerIndex.html";
+async function login() {
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!phone || !password) {
+        alert('请输入手机号和密码');
+        return;
+    }
+
+    try {
+        const json = await apiPost('/auth/login', { phone, password });
+        if (json.code !== 200) {
+            alert(json.message || '登录失败');
+            return;
+        }
+        saveLoginUser(json.data);
+        alert('登录成功！');
+        var redirect = getQueryParam('redirect');
+        if (redirect) {
+            location.href = redirect;
+        } else if (json.data.role === 'ADMIN') {
+            location.href = 'adminIndex.html';
+        } else {
+            location.href = 'customerIndex.html';
+        }
+    } catch (e) {
+        alert('无法连接后端，请检查 config.js 中的 API 地址及后端服务是否启动');
+    }
 }
 </script>
 
+    <script src="js/common.js"></script>
 </body>
 </html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>房型管理 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    .page{max-width:900px;margin:40px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:20px;}
+    .toolbar{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+    .toolbar button{padding:10px 18px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+    .btn-add{background:#22c55e;color:white;}
+    .btn-back{background:#6b7280;color:white;}
+    .btn-edit-hotel{background:#2563eb;color:white;}
+    table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.07);}
+    th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px;}
+    th{background:#f8fafc;color:#475569;font-weight:600;}
+    .ops button{margin-right:8px;padding:6px 12px;border:none;border-radius:6px;font-size:12px;cursor:pointer;color:white;}
+    .ops .edit{background:#2563eb;}
+    .ops .del{background:#dc2626;}
+    .empty{padding:40px;text-align:center;color:#64748b;background:white;border-radius:12px;}
+    .tip{background:#eff6ff;border-left:4px solid #3b82f6;padding:12px 16px;border-radius:8px;font-size:13px;color:#1e40af;margin-bottom:20px;}
+</style>
+</head>
+<body data-nav="admin" data-page-title="房型管理">
+<div class="page">
+    <div class="title">房型管理</div>
+    <div class="sub" id="hotelSub">加载中...</div>
+    <div class="tip">用户端/App 预订需先在此为酒店添加至少一种房型，否则「选择房型」将为空。</div>
+    <div class="toolbar">
+        <button class="btn-add" onclick="goAdd()">+ 添加房型</button>
+        <button class="btn-edit-hotel" onclick="goEditHotel()">编辑酒店资料</button>
+        <button class="btn-back" onclick="location.href='manageHotel.html'">返回酒店列表</button>
+    </div>
+    <div id="roomTable"></div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+var hotelId = getQueryParam('hotelId') || getQueryParam('id');
+var hotelName = decodeURIComponent(getQueryParam('hotelName') || '');
+
+async function loadRoomTypes() {
+    if (!requireAdmin()) return;
+    if (!hotelId) { alert('缺少酒店ID'); location.href = 'manageHotel.html'; return; }
+    document.getElementById('hotelSub').textContent = (hotelName || '酒店 #' + hotelId) + ' · 管理该酒店下所有房型';
+    var json = await apiGet('/hotels/' + hotelId + '/room-types');
+    var box = document.getElementById('roomTable');
+    if (json.code !== 200 || !json.data || json.data.length === 0) {
+        box.innerHTML = '<div class="empty">暂无房型，请点击「添加房型」</div>';
+        return;
+    }
+    var rows = json.data.map(function(r) {
+        var breakfast = r.breakfastIncluded === 1 ? '含早' : '不含早';
+        return '<tr><td>' + r.roomTypeName + '</td><td>' + (r.bedType || '-') + '</td><td>' + r.capacity + ' 人</td><td>￥' + r.price + '</td><td>' + (r.availableRooms ?? '-') + ' / ' + (r.totalRooms ?? '-') + '</td><td>' + breakfast + '</td><td class="ops">' +
+            '<button class="edit" onclick="goEdit(' + r.id + ')">编辑</button>' +
+            '<button class="del" onclick="delRoom(' + r.id + ',\'' + (r.roomTypeName || '').replace(/'/g, '') + '\')">删除</button></td></tr>';
+    }).join('');
+    box.innerHTML = '<table><thead><tr><th>房型名称</th><th>床型</th><th>可住人数</th><th>每晚价格</th><th>可订/总数</th><th>早餐</th><th>操作</th></tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+function goAdd() {
+    location.href = 'addRoomType.html?hotelId=' + hotelId + '&hotelName=' + encodeURIComponent(hotelName);
+}
+function goEdit(roomTypeId) {
+    location.href = 'editRoomType.html?hotelId=' + hotelId + '&id=' + roomTypeId + '&hotelName=' + encodeURIComponent(hotelName);
+}
+function goEditHotel() {
+    location.href = 'editHotel.html?id=' + hotelId;
+}
+async function delRoom(id, name) {
+    if (!confirm('确认删除房型「' + name + '」？')) return;
+    var json = await apiDelete('/admin/room-types/' + id);
+    if (json.code !== 200) { alert(json.message || '删除失败'); return; }
+    alert('已删除');
+    loadRoomTypes();
+}
+loadRoomTypes();
+</script>
+</body>
+</html>

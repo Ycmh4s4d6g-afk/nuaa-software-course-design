@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>订单管理后台 - 酒店预订系统</title>
 
 <style>
@@ -39,79 +40,27 @@
 
 <body>
 
-<header>
-    <div>🗂 订单管理后台</div>
-    <nav>
-        <a href="adminIndex.html">返回管理主页</a>
-        <a href="index.html">回到系统首页</a>
-    </nav>
-</header>
-
-<table>
+<table id="resTable">
     <tr>
-        <th>订单编号</th>
-        <th>预订用户</th>
-        <th>酒店名称</th>
-        <th>入住日期</th>
-        <th>退房日期</th>
-        <th>金额</th>
-        <th>状态</th>
-        <th>操作</th>
+        <th>订单编号</th><th>预订用户</th><th>酒店名称</th><th>入住日期</th><th>退房日期</th><th>金额</th><th>状态</th><th>操作</th>
     </tr>
-
-    <tr>
-        <td>20250220101</td>
-        <td>小陈</td>
-        <td>杭州西湖云舍民宿</td>
-        <td>2025-02-20</td>
-        <td>2025-02-22</td>
-        <td>￥1040</td>
-        <td style="color:#d97706;font-weight:600;">待审核</td>
-        <td>
-            <button class="audit" onclick="location.href='auditReservation.html'">审核</button>
-            <button class="detail" onclick="location.href='reservationDetail.html'">详情</button>
-            <button class="del" onclick="delRow(this)">删除</button>
-        </td>
-    </tr>
-
-    <tr>
-        <td>20250115133</td>
-        <td>Alice</td>
-        <td>南京紫峰大厦酒店</td>
-        <td>2025-01-19</td>
-        <td>2025-01-21</td>
-        <td>￥980</td>
-        <td style="color:#16a34a;font-weight:600;">已通过</td>
-        <td>
-            <button class="detail" onclick="location.href='reservationDetail.html'">详情</button>
-            <button class="del" onclick="delRow(this)">删除</button>
-        </td>
-    </tr>
-
-    <tr>
-        <td>20241228100</td>
-        <td>李亮</td>
-        <td>上海外滩星程酒店</td>
-        <td>2024-12-28</td>
-        <td>2024-12-30</td>
-        <td>￥720</td>
-        <td style="color:#6b7280;font-weight:600;">已取消</td>
-        <td>
-            <button class="detail" onclick="location.href='reservationDetail.html'">详情</button>
-            <button class="del" onclick="delRow(this)">删除</button>
-        </td>
-    </tr>
-
 </table>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
 <script>
-function delRow(btn){
-    if(confirm("确认删除该订单记录？")){
-        btn.parentNode.parentNode.remove();
-        alert("订单已删除 ✔");
-    }
+async function loadList() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/reservations?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    var rows = (json.data.records || []).map(function(r) {
+        var auditBtn = r.status === 'PAID' ? '<button class="audit" onclick="location.href=\'auditReservation.html?id=' + r.id + '\'">审核</button>' : '';
+        return '<tr><td>' + r.reservationNo + '</td><td>' + (r.username || r.contactName) + '</td><td>' + (r.hotelName || '-') + '</td><td>' + r.checkInDate + '</td><td>' + r.checkOutDate + '</td><td>￥' + r.totalAmount + '</td><td>' + reservationStatusText(r.status) + '</td><td>' + auditBtn + '<button class="detail" onclick="location.href=\'auditReservation.html?id=' + r.id + '\'">详情</button></td></tr>';
+    }).join('');
+    document.getElementById('resTable').innerHTML = '<tr><th>订单编号</th><th>预订用户</th><th>酒店名称</th><th>入住日期</th><th>退房日期</th><th>金额</th><th>状态</th><th>操作</th></tr>' + rows;
 }
+loadList();
 </script>
-
 </body>
 </html>

@@ -2,96 +2,64 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
 <title>个人信息 - 酒店预订系统</title>
 <style>
     body{margin:0;background:#f4f6fb;font-family:"Segoe UI",Roboto,"Noto Sans SC";}
-    header{
-        background:linear-gradient(120deg,#3b82f6,#2563eb);
-        padding:14px 36px;color:#fff;
-        display:flex;justify-content:space-between;align-items:center;
-    }
-    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
-    header a:hover{opacity:.8;}
-
-    /* 信息卡片区域 */
-    .container{
-        width:500px;margin:80px auto;
-        background:white;border-radius:20px;
-        box-shadow:0 4px 16px rgba(0,0,0,.08);
-        padding:36px 42px 42px;
-    }
+    .container{width:500px;margin:80px auto;background:white;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,.08);padding:36px 42px 42px;}
     .title{text-align:center;font-size:22px;font-weight:600;margin-bottom:6px;}
     .sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:28px;}
-
-    .info-line{
-        display:flex;justify-content:space-between;
-        padding:10px 4px;font-size:15px;
-        border-bottom:1px solid #e5e7eb;
-    }
+    .info-line{display:flex;justify-content:space-between;padding:10px 4px;font-size:15px;border-bottom:1px solid #e5e7eb;}
     .info-label{color:#475569;}
-    .info-value{font-weight:500;}
-
+    .info-value{font-weight:500;text-align:right;max-width:60%;}
     .btn-area{margin-top:26px;}
-    .btn{
-        width:100%;padding:12px;border-radius:8px;border:none;
-        font-size:15px;font-weight:500;margin-bottom:10px;
-        cursor:pointer;transition:.2s;
-    }
+    .btn{width:100%;padding:12px;border-radius:8px;border:none;font-size:15px;font-weight:500;margin-bottom:10px;cursor:pointer;}
     .edit{background:#2563eb;color:white;}
-    .edit:hover{filter:brightness(1.07);}
     .password{background:#0ea5e9;color:white;}
-    .password:hover{filter:brightness(1.07);}
     .cancel{background:#ef4444;color:white;}
-    .cancel:hover{filter:brightness(1.07);}
 </style>
 </head>
 <body>
-
-<header>
-    <div style="font-weight:600;font-size:18px;">🏷 个人信息中心</div>
-    <nav>
-        <a href="index.html">首页</a>
-        <a href="hotelList.html">酒店查询</a>
-        <a href="reservationList.html">我的订单</a>
-        <a href="customerIndex.html">返回用户主页</a>
-    </nav>
-</header>
-
 <div class="container">
     <div class="title">当前账户信息</div>
-    <div class="sub">以下为您的个人账号资料，可进行修改或安全设置</div>
-
-    <div class="info-line">
-        <div class="info-label">手机号 / 用户名</div>
-        <div class="info-value">138****XXXX</div>
-    </div>
-
-    <div class="info-line">
-        <div class="info-label">账户类型</div>
-        <div class="info-value">普通用户</div>
-    </div>
-
-    <div class="info-line">
-        <div class="info-label">会员等级</div>
-        <div class="info-value">LV1 新用户</div>
-    </div>
-
-    <div class="info-line">
-        <div class="info-label">注册时间</div>
-        <div class="info-value">2025-xx-xx</div>
-    </div>
-
-    <div class="info-line">
-        <div class="info-label">累计预订数</div>
-        <div class="info-value">3 次</div>
-    </div>
-
+    <p class="sub">以下为您的个人账号资料，可进行修改或安全设置</p>
+    <div class="info-line"><div class="info-label">用户ID</div><div class="info-value" id="vId">-</div></div>
+    <div class="info-line"><div class="info-label">昵称</div><div class="info-value" id="vUsername">-</div></div>
+    <div class="info-line"><div class="info-label">手机号</div><div class="info-value" id="vPhone">-</div></div>
+    <div class="info-line"><div class="info-label">邮箱</div><div class="info-value" id="vEmail">-</div></div>
+    <div class="info-line"><div class="info-label">账户类型</div><div class="info-value" id="vRole">-</div></div>
+    <div class="info-line"><div class="info-label">账户状态</div><div class="info-value" id="vStatus">-</div></div>
+    <div class="info-line"><div class="info-label">性别</div><div class="info-value" id="vGender">-</div></div>
+    <div class="info-line"><div class="info-label">注册时间</div><div class="info-value" id="vCreateTime">-</div></div>
+    <div class="info-line"><div class="info-label">最后登录</div><div class="info-value" id="vLastLogin">-</div></div>
     <div class="btn-area">
         <button class="btn edit" onclick="location.href='changeUserInfo.html'">✏ 修改个人信息</button>
         <button class="btn password" onclick="location.href='changePassword.html'">🔐 修改密码</button>
         <button class="btn cancel" onclick="location.href='cancelUser.html'">⚠ 注销账号</button>
     </div>
 </div>
-
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadProfile() {
+    if (!requireLogin()) return;
+    try {
+        var json = await apiGetAuth('/users/me');
+        if (json.code !== 200) { alert(json.message || '加载失败'); return; }
+        var u = json.data;
+        document.getElementById('vId').textContent = u.id;
+        document.getElementById('vUsername').textContent = u.username;
+        document.getElementById('vPhone').textContent = u.phone;
+        document.getElementById('vEmail').textContent = u.email || '未填写';
+        document.getElementById('vRole').textContent = userRoleText(u.role);
+        document.getElementById('vStatus').textContent = userStatusText(u.status);
+        document.getElementById('vGender').textContent = u.gender || 'UNKNOWN';
+        document.getElementById('vCreateTime').textContent = formatDateTime(u.createTime) || '-';
+        document.getElementById('vLastLogin').textContent = formatDateTime(u.lastLoginTime) || '-';
+    } catch (e) { alert('无法连接后端'); }
+}
+loadProfile();
+</script>
 </body>
 </html>

@@ -2,33 +2,43 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
 <title>支付成功 - 酒店预订系统</title>
 <style>
     body{margin:0;background:#ecfdf5;font-family:"Segoe UI","Noto Sans SC";}
-    .box{
-        width:520px;margin:90px auto;background:white;
-        padding:40px;border-radius:18px;text-align:center;
-        box-shadow:0 6px 20px rgba(0,0,0,.1);
-    }
+    .box{width:520px;margin:90px auto;background:white;padding:40px;border-radius:18px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.1);}
     h1{font-size:28px;color:#059669;margin-bottom:10px;}
     p{font-size:15px;color:#374151;margin-top:6px;}
-    button{
-        width:200px;padding:12px;margin-top:24px;
-        border:none;border-radius:8px;color:white;
-        font-size:15px;font-weight:600;cursor:pointer;
-    }
+    button{width:200px;padding:12px;margin-top:24px;border:none;border-radius:8px;color:white;font-size:15px;font-weight:600;cursor:pointer;}
     .go{background:#059669;margin-right:10px;}
     .toOrder{background:#2563eb;}
 </style>
 </head>
-
 <body>
 <div class="box">
     <h1>✔ 支付成功</h1>
-    <p>订单编号： <b>#20250220101</b></p>
-    <p>支付金额：<b style="color:#dc2626">¥1040</b></p>
-    <button class="go" onclick="location.href='index.html'">返回首页</button>
-    <button class="toOrder" onclick="location.href='reservationDetail.html'">查看订单详情</button>
+    <p>订单编号：<b id="orderNo">-</b></p>
+    <p>支付金额：<b id="amount" style="color:#dc2626">-</b></p>
+    <button class="go" onclick="location.href='customerIndex.html'">返回用户中心</button>
+    <button class="toOrder" id="detailBtn">查看订单详情</button>
 </div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+(function () {
+    var reservationId = getQueryParam('reservationId');
+    var amount = getQueryParam('amount');
+    if (amount) document.getElementById('amount').textContent = '￥' + amount;
+    if (reservationId) {
+        document.getElementById('detailBtn').onclick = function() {
+            location.href = 'reservationDetail.html?id=' + reservationId;
+        };
+        apiGetAuth('/reservations/' + reservationId).then(function(json) {
+            if (json.code === 200) document.getElementById('orderNo').textContent = json.data.reservationNo;
+        });
+    }
+})();
+</script>
 </body>
 </html>

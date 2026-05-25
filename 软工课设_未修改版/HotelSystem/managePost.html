@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>评论管理后台 - 酒店预订系统</title>
 
 <style>
@@ -62,72 +63,35 @@
 
 <body>
 
-<header>
-    <div style="font-size:18px;font-weight:600;">🛠 评论管理后台</div>
-    <nav>
-        <a href="adminIndex.html">管理员首页</a>
-        <a href="index.html">系统首页</a>
-    </nav>
-</header>
-
 <div class="page">
 
     <div class="title">评论审核列表</div>
     <div class="sub">可执行查看 / 审核 / 删除操作</div>
-
-    <!-- 评论1（已审核） -->
-    <div class="post">
-        <div class="head">
-            <div class="post-title">西湖云舍民宿体验 · 景色太赞！</div>
-            <span class="status approved">已审核</span>
-        </div>
-        <div class="desc">房间干净，落地湖景非常治愈，强推！——内容摘要展示……</div>
-        <div class="btns">
-            <button class="look" onclick="location.href='displayPost.html'">查看详情</button>
-            <button class="del" onclick="del(this)">删除评论</button>
-        </div>
-    </div>
-
-    <!-- 评论2（待审核） -->
-    <div class="post">
-        <div class="head">
-            <div class="post-title">上海外滩酒店环境不错但偏贵</div>
-            <span class="status pending">待审核</span>
-        </div>
-        <div class="desc">酒店位置优越，可步行至外滩，但假日价格偏高，房间一般……</div>
-        <div class="btns">
-            <button class="look" onclick="location.href='displayPost.html'">查看详情</button>
-            <button class="approve" onclick="approve(this)">审核通过</button>
-            <button class="del" onclick="del(this)">删除</button>
-        </div>
-    </div>
-
-    <!-- 评论3 -->
-    <div class="post">
-        <div class="head">
-            <div class="post-title">紫峰大厦夜景超美，一定要住高层！</div>
-            <span class="status pending">待审核</span>
-        </div>
-        <div class="desc">高层景观视野开阔，自助早餐丰富，可泡浴看夜景很享受……</div>
-        <div class="btns">
-            <button class="look" onclick="location.href='displayPost.html'">查看</button>
-            <button class="approve" onclick="approve(this)">审核通过</button>
-            <button class="del" onclick="del(this)">删除</button>
-        </div>
-    </div>
-
+    <div id="postList"></div>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
 <script>
-function approve(btn){
-    btn.parentNode.parentNode.querySelector(".status").className="status approved";
-    btn.parentNode.parentNode.querySelector(".status").innerHTML="已审核";
-    btn.remove(); //按钮消失
+async function loadPosts() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/posts?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    document.getElementById('postList').innerHTML = (json.data.records || []).map(function(p) {
+        var stCls = p.auditStatus === 'APPROVED' ? 'approved' : 'pending';
+        var stText = postAuditText(p.auditStatus);
+        var auditBtn = p.auditStatus === 'PENDING' ? '<button class="approve" onclick="location.href=\'auditPost.html?id=' + p.id + '\'">前往审核</button>' : '';
+        return '<div class="post"><div class="head"><div class="post-title">' + (p.title || '无标题') + '</div><span class="status ' + stCls + '">' + stText + '</span></div><div class="desc">' + (p.content || '').substring(0,80) + '… · ' + (p.hotelName || '') + ' · ' + (p.username || '') + '</div><div class="btns"><button class="look" onclick="location.href=\'auditPost.html?id=' + p.id + '\'">查看</button>' + auditBtn + '<button class="del" onclick="delPost(' + p.id + ')">删除</button></div></div>';
+    }).join('');
 }
-function del(btn){
-    btn.parentNode.parentNode.remove();
+async function delPost(id) {
+    if (!confirm('确认删除评论？')) return;
+    var json = await apiDelete('/admin/posts/' + id);
+    if (json.code !== 200) { alert(json.message); return; }
+    loadPosts();
 }
+loadPosts();
 </script>
-
 </body>
 </html>

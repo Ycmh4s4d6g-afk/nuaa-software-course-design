@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>评论详情 - 酒店预订系统</title>
 
 <style>
@@ -75,15 +76,6 @@
 
 <body>
 
-<header>
-    <div style="font-size:18px;font-weight:600;">📖 评论贴详情</div>
-    <nav>
-        <a href="listPost.html">返回评论列表</a>
-        <a href="customerIndex.html">用户主页</a>
-        <a href="index.html">首页</a>
-    </nav>
-</header>
-
 <div class="page">
 
     <!-- 帖子主体内容 -->
@@ -100,6 +92,7 @@
 早餐是现磨豆浆+手工包子，简单却很用心，让人印象深刻！
         </div>
 
+        <div class="btn-group" style="margin-top:16px"><a href="editPost.html" class="btn btn-outline btn-sm">编辑评论</a></div>
         <div class="like" onclick="like()">👍 点赞 <span id="count">32</span></div>
     </div>
 
@@ -152,5 +145,6 @@ function addComment(){
 }
 </script>
 
+    <script src="js/common.js"></script>
 </body>
 </html>

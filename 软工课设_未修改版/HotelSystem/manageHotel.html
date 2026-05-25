@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
 <title>酒店管理后台 - 酒店预订系统</title>
 
 <style>
@@ -51,6 +52,8 @@
     }
     .edit{background:#2563eb;color:white;}
     .edit:hover{filter:brightness(1.08);}
+    .room{background:#0ea5e9;color:white;}
+    .room:hover{filter:brightness(1.08);}
     .del{background:#dc2626;color:white;}
     .del:hover{filter:brightness(1.08);}
 
@@ -68,70 +71,33 @@
 
 <body>
 
-<header>
-    <div style="font-size:18px;font-weight:600;">🏨 酒店管理后台</div>
-    <nav>
-        <a href="adminIndex.html">管理员首页</a>
-        <a href="addHotel.html">新增酒店</a>
-        <a href="index.html">系统首页</a>
-    </nav>
-</header>
-
 <div class="page">
 
     <div class="title">酒店信息管理</div>
-    <div class="sub">管理员可对酒店进行添加 / 修改 / 删除操作</div>
+    <div class="sub">管理员可对酒店进行添加 / 修改 / 删除操作；新建酒店后请为酒店<strong>添加房型</strong>，否则用户端无法预订</div>
 
     <div class="add">
         <button onclick="location.href='addHotel.html'">+ 新增酒店</button>
     </div>
 
-    <div class="grid">
-
-        <!-- 酒店1 -->
-        <div class="card">
-            <div class="img"><img src="杭州西湖.jpg"></div>
-            <div class="info">
-                <div class="name">杭州西湖云舍民宿</div>
-                <div class="meta">西湖景区核心 · 评分4.7</div>
-                <div class="price">￥520 / 晚</div>
-            </div>
-            <div class="btn-area">
-                <button class="btn edit" onclick="location.href='editHotel.html'">编辑</button>
-                <button class="btn del" onclick="location.href='deleteHotel.html'">删除</button>
-            </div>
-        </div>
-
-        <!-- 酒店2 -->
-        <div class="card">
-            <div class="img"><img src="上海外滩.jpg"></div>
-            <div class="info">
-                <div class="name">上海外滩星程酒店</div>
-                <div class="meta">黄浦区中心地带 · 评分4.6</div>
-                <div class="price">￥598 / 晚</div>
-            </div>
-            <div class="btn-area">
-                <button class="btn edit" onclick="location.href='editHotel.html'">编辑</button>
-                <button class="btn del" onclick="location.href='deleteHotel.html'">删除</button>
-            </div>
-        </div>
-
-        <!-- 酒店3 -->
-        <div class="card">
-            <div class="img"><img src="紫峰大厦.jpg"></div>
-            <div class="info">
-                <div class="name">南京紫峰大厦精选酒店</div>
-                <div class="meta">玄武区商业中心 · 评分4.8</div>
-                <div class="price">￥488 / 晚</div>
-            </div>
-            <div class="btn-area">
-                <button class="btn edit" onclick="location.href='editHotel.html'">编辑</button>
-                <button class="btn del" onclick="location.href='deleteHotel.html'">删除</button>
-            </div>
-        </div>
-
-    </div>
+    <div class="grid" id="hotelGrid"></div>
 </div>
 
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadHotels() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/hotels?page=1&size=50');
+    if (json.code !== 200) { alert(json.message || '加载失败'); return; }
+    var grid = document.getElementById('hotelGrid');
+    grid.innerHTML = (json.data.records || []).map(function(h) {
+        var off = h.isReservable === 0 ? '（已下架）' : '';
+        return '<div class="card"><div class="img"><img src="' + hotelImage(h.id) + '"></div><div class="info"><div class="name">' + h.hotelName + off + '</div><div class="meta">' + h.city + ' · ' + h.hotelType + ' · 评分' + h.rating + '</div><div class="price">￥' + h.minPrice + ' / 晚</div></div><div class="btn-area"><button class="btn room" onclick="location.href=\'manageRoomTypes.html?hotelId=' + h.id + '&hotelName=' + encodeURIComponent(h.hotelName) + '\'">房型</button><button class="btn edit" onclick="location.href=\'editHotel.html?id=' + h.id + '\'">编辑</button><button class="btn del" onclick="location.href=\'deleteHotel.html?id=' + h.id + '\'">删除</button></div></div>';
+    }).join('');
+}
+loadHotels();
+</script>
 </body>
 </html>
