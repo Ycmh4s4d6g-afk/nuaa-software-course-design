@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>系统通知中心 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#2563eb,#1e40af);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 3px 12px rgba(0,0,0,.22);
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .container{max-width:900px;margin:40px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:26px;}
+
+    /* 通知盒子 */
+    .note{
+        background:white;border-radius:14px;padding:16px 20px;
+        margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.07);
+        border-left:6px solid #2563eb;
+        cursor:pointer;transition:.25s;
+    }
+    .note:hover{transform:translateX(6px);}
+    .read{
+        opacity:.55;border-left:6px solid #94a3b8;
+    }
+
+    .head{
+        display:flex;justify-content:space-between;align-items:center;
+        font-size:15px;font-weight:700;margin-bottom:4px;
+    }
+    .time{font-size:12px;color:#6b7280;font-weight:500;}
+
+    .content{font-size:14px;color:#374151;margin-bottom:10px;}
+    button{
+        padding:6px 14px;border:none;border-radius:6px;
+        font-size:13px;font-weight:600;cursor:pointer;transition:.2s;
+    }
+    .see{background:#2563eb;color:white;width:90px;}
+    .see:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">🔔 系统通知中心</div>
+    <nav>
+        <a href="customerIndex.html">用户主页</a>
+        <a href="reservationList.html">订单中心</a>
+        <a href="index.html">首页</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="title">我的通知</div>
+    <div class="sub">查看订单进度、评论提示、退款处理状态等系统消息</div>
+
+    <!-- 通知1（未读） -->
+    <div class="note" onclick="markRead(this)">
+        <div class="head">
+            <span>订单已预订成功</span>
+            <span class="time">2025-01-14  10:22</span>
+        </div>
+        <div class="content">你在「杭州西湖云舍民宿」的预订已确认 ✔</div>
+        <button class="see" onclick="event.stopPropagation();location.href='reservationDetail.html'">查看订单</button>
+    </div>
+
+    <!-- 通知2（未读） -->
+    <div class="note" onclick="markRead(this)">
+        <div class="head">
+            <span>新的评论回复提醒</span>
+            <span class="time">2025-02-03  14:11</span>
+        </div>
+        <div class="content">你发布的评论贴有 2 条新回复 🔥</div>
+        <button class="see" onclick="event.stopPropagation();location.href='displayPost.html'">查看评论</button>
+    </div>
+
+    <!-- 通知3（已读） -->
+    <div class="note read">
+        <div class="head">
+            <span>预订已取消</span>
+            <span class="time">2025-02-01  09:05</span>
+        </div>
+        <div class="content">你取消了「上海外滩星程酒店」的订单</div>
+        <button class="see" onclick="event.stopPropagation();location.href='reservationDetail.html'">查看记录</button>
+    </div>
+
+</div>
+
+<script>
+function markRead(box){
+    box.classList.add("read");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>删除酒店 - 酒店预订系统后台</title>
+
+<style>
+    body{margin:0;background:#f5f7fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(135deg,#dc2626,#b91c1c);
+        color:white;padding:14px 36px;font-size:18px;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 4px 14px rgba(0,0,0,.25);
+    }
+    header a{color:white;text-decoration:none;margin-left:16px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .box{
+        width:500px;margin:60px auto;background:white;
+        padding:36px;border-radius:14px;
+        box-shadow:0 4px 18px rgba(0,0,0,.1);
+        text-align:center;
+    }
+    h2{margin-top:0;margin-bottom:18px;}
+
+    select{
+        width:100%;padding:10px;border-radius:8px;
+        border:1px solid #cbd5e1;font-size:15px;margin-bottom:26px;
+    }
+
+    button{
+        width:100%;padding:12px;border:none;border-radius:8px;
+        color:white;font-size:16px;font-weight:600;
+        cursor:pointer;background:#b91c1c;
+    }
+    button:hover{filter:brightness(1.05);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div><b>⚠ 酒店删除（后台操作）</b></div>
+    <nav>
+        <a href="adminIndex.html">返回管理首页</a>
+        <a href="manageHotel.html">回到酒店管理</a>
+    </nav>
+</header>
+
+<div class="box">
+
+    <h2>请选择要删除的酒店</h2>
+
+    <select id="hotel">
+        <option>杭州西湖云舍民宿（示例）</option>
+        <option>上海外滩星程酒店</option>
+        <option>南京紫峰大厦精选酒店</option>
+    </select>
+
+    <button onclick="removeHotel()">删除酒店</button>
+
+</div>
+
+<script>
+function removeHotel(){
+    let name = document.getElementById("hotel").value;
+    alert("酒店【"+name+"】已成功删除 ✔（演示）");
+    location.href="manageHotel.html";
+}
+</script>
+
+</body>
+</html>

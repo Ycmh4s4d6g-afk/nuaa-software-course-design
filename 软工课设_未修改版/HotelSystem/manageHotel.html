@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>酒店管理后台 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:1150px;margin:40px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
+
+    /* 酒店卡片管理布局 */
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:26px;
+    }
+
+    .card{
+        background:white;border-radius:14px;overflow:hidden;
+        box-shadow:0 4px 14px rgba(0,0,0,.07);
+        transition:.25s;
+    }
+    .card:hover{transform:translateY(-4px);}
+
+    .img{height:200px;overflow:hidden;}
+    .img img{width:100%;height:100%;object-fit:cover;}
+
+    .info{padding:16px;}
+    .name{font-size:17px;font-weight:600;margin-bottom:6px;}
+    .meta{font-size:13px;color:#6b7280;margin-bottom:6px;}
+    .price{font-weight:700;color:#2563eb;}
+
+    /* 操作按钮区域 */
+    .btn-area{
+        padding:12px 16px;border-top:1px solid #e5e7eb;
+        display:flex;justify-content:space-between;
+    }
+    .btn{
+        padding:8px 16px;border-radius:6px;font-size:13px;
+        border:none;cursor:pointer;transition:.2s;
+    }
+    .edit{background:#2563eb;color:white;}
+    .edit:hover{filter:brightness(1.08);}
+    .del{background:#dc2626;color:white;}
+    .del:hover{filter:brightness(1.08);}
+
+    .add{
+        margin:0 0 26px;text-align:right;
+    }
+    .add button{
+        background:#22c55e;color:white;font-size:14px;
+        padding:10px 18px;border:none;border-radius:8px;
+        cursor:pointer;transition:.2s;font-weight:600;
+    }
+    .add button:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">🏨 酒店管理后台</div>
+    <nav>
+        <a href="adminIndex.html">管理员首页</a>
+        <a href="addHotel.html">新增酒店</a>
+        <a href="index.html">系统首页</a>
+    </nav>
+</header>
+
+<div class="page">
+
+    <div class="title">酒店信息管理</div>
+    <div class="sub">管理员可对酒店进行添加 / 修改 / 删除操作</div>
+
+    <div class="add">
+        <button onclick="location.href='addHotel.html'">+ 新增酒店</button>
+    </div>
+
+    <div class="grid">
+
+        <!-- 酒店1 -->
+        <div class="card">
+            <div class="img"><img src="杭州西湖.jpg"></div>
+            <div class="info">
+                <div class="name">杭州西湖云舍民宿</div>
+                <div class="meta">西湖景区核心 · 评分4.7</div>
+                <div class="price">￥520 / 晚</div>
+            </div>
+            <div class="btn-area">
+                <button class="btn edit" onclick="location.href='editHotel.html'">编辑</button>
+                <button class="btn del" onclick="location.href='deleteHotel.html'">删除</button>
+            </div>
+        </div>
+
+        <!-- 酒店2 -->
+        <div class="card">
+            <div class="img"><img src="上海外滩.jpg"></div>
+            <div class="info">
+                <div class="name">上海外滩星程酒店</div>
+                <div class="meta">黄浦区中心地带 · 评分4.6</div>
+                <div class="price">￥598 / 晚</div>
+            </div>
+            <div class="btn-area">
+                <button class="btn edit" onclick="location.href='editHotel.html'">编辑</button>
+                <button class="btn del" onclick="location.href='deleteHotel.html'">删除</button>
+            </div>
+        </div>
+
+        <!-- 酒店3 -->
+        <div class="card">
+            <div class="img"><img src="紫峰大厦.jpg"></div>
+            <div class="info">
+                <div class="name">南京紫峰大厦精选酒店</div>
+                <div class="meta">玄武区商业中心 · 评分4.8</div>
+                <div class="price">￥488 / 晚</div>
+            </div>
+            <div class="btn-area">
+                <button class="btn edit" onclick="location.href='editHotel.html'">编辑</button>
+                <button class="btn del" onclick="location.href='deleteHotel.html'">删除</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

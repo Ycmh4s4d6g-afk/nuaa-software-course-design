@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>管理员后台首页 - 酒店预订系统</title>
+
+<style>
+    body{
+        margin:0;
+        background:#f5f6fa;
+        font-family:"Segoe UI","Noto Sans SC";
+    }
+    header{
+        background:linear-gradient(120deg,#1e40af,#2563eb);
+        padding:18px 40px;
+        color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        font-size:20px;font-weight:600;
+        box-shadow:0 4px 15px rgba(0,0,0,.25);
+    }
+    header a{
+        color:white;font-size:15px;text-decoration:none;margin-left:18px;
+    }
+    header a:hover{opacity:.85;}
+
+    .container{
+        padding:60px 6%;
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:32px;
+    }
+
+    .card{
+        background:white;
+        border-radius:18px;
+        padding:32px 26px;
+        box-shadow:0 4px 22px rgba(0,0,0,.08);
+        text-align:center;
+        cursor:pointer;
+        transition:.25s;
+    }
+    .card:hover{
+        transform:translateY(-6px);
+        box-shadow:0 8px 30px rgba(0,0,0,.15);
+    }
+    .icon{
+        font-size:48px;margin-bottom:12px;
+    }
+    h3{margin:6px 0;font-size:20px;}
+    p{margin-top:6px;color:#6b7280;font-size:14px;line-height:20px;}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>🏨 酒店预订系统 — 管理后台</div>
+    <nav>
+        <a href="adminSignin.html">退出登录</a>
+        <a href="index.html">返回前台首页</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="card" onclick="location.href='manageUser.html'">
+        <div class="icon">👤</div>
+        <h3>用户管理</h3>
+        <p>查看用户账号、修改资料、删除异常用户</p>
+    </div>
+
+    <div class="card" onclick="location.href='manageHotel.html'">
+        <div class="icon">🏩</div>
+        <h3>酒店管理</h3>
+        <p>新增酒店、信息修改、下架与维护</p>
+    </div>
+
+    <div class="card" onclick="location.href='manageReservation.html'">
+        <div class="icon">📑</div>
+        <h3>订单/预订管理</h3>
+        <p>审核预订、查看订单记录、操作订单状态</p>
+    </div>
+
+    <div class="card" onclick="location.href='managePost.html'">
+        <div class="icon">📝</div>
+        <h3>评论审核</h3>
+        <p>管理酒店评价、删除违规评论、审核贴文</p>
+    </div>
+
+    <div class="card" onclick="location.href='managePayment.html'">
+        <div class="icon">💰</div>
+        <h3>支付记录</h3>
+        <p>查看用户订单支付流水、退款审核</p>
+    </div>
+
+    <div class="card" onclick="location.href='manageNotification.html'">
+        <div class="icon">🔔</div>
+        <h3>通知中心</h3>
+        <p>系统告知、退款提醒、审核处理消息</p>
+    </div>
+
+</div>
+
+</body>
+</html>

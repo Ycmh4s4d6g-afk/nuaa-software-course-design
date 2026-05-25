@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>酒店详情 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    /* 酒店展示主体 */
+    .page{max-width:1100px;margin:40px auto;padding:0 26px;}
+
+    .hotel-name{font-size:26px;font-weight:700;margin-bottom:6px;}
+    .meta{font-size:14px;color:#6b7280;margin-bottom:18px;}
+    .price{color:#2563eb;font-size:22px;font-weight:700;}
+
+    /* 图片轮播 */
+    .carousel{
+        width:100%;height:420px;border-radius:18px;overflow:hidden;
+        box-shadow:0 4px 18px rgba(0,0,0,.1);
+        position:relative;margin-bottom:30px;
+    }
+    .carousel img{
+        width:100%;height:100%;object-fit:cover;display:block;
+    }
+
+    /* 简介、设施区块 */
+    section{
+        background:white;border-radius:18px;padding:28px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);
+        margin-bottom:26px;
+    }
+    section h2{margin:0 0 10px;font-size:20px;}
+    .text{line-height:1.8;font-size:14px;color:#4b5563;}
+
+    .tag{
+        display:inline-block;padding:6px 12px;background:#eff6ff;
+        border-radius:6px;color:#2563eb;font-size:13px;margin:4px 6px 0 0;
+    }
+
+    /* 底部按钮 */
+    .action-box{
+        display:flex;gap:18px;margin-top:20px;
+    }
+    .btn{
+        flex:1;padding:14px;border:none;border-radius:10px;
+        font-size:16px;font-weight:600;cursor:pointer;
+        transition:.2s;
+    }
+    .book{background:#22c55e;color:white;}
+    .book:hover{filter:brightness(1.08);}
+    .collect{background:#2563eb;color:white;}
+    .collect:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">🏨 酒店详情</div>
+    <nav>
+        <a href="hotelList.html">酒店列表</a>
+        <a href="customerIndex.html">用户中心</a>
+        <a href="collectionList.html">收藏夹</a>
+        <a href="index.html">首页</a>
+    </nav>
+</header>
+
+
+<div class="page">
+
+    <!-- 酒店大图轮播区：可自行添加更多图片 -->
+    <div class="carousel">
+        <img src="杭州西湖.jpg" id="imgShow">
+    </div>
+
+    <script>
+        // 简易轮播（如有多图可添加）
+        let imgs=["杭州西湖.jpg","上海外滩.jpg","紫峰大厦.jpg"];
+        let i=0;
+        setInterval(()=>{
+            i=(i+1)%imgs.length;
+            document.getElementById("imgShow").src=imgs[i];
+        },4000);
+    </script>
+
+    <div class="hotel-name">杭州西湖云舍民宿</div>
+    <div class="meta">📍 浙江 · 杭州市 · 西湖区 | ⭐ 4.7分（1258条评价）</div>
+    <div class="price">￥520 起 / 晚</div>
+
+    <!-- 酒店介绍 -->
+    <section>
+        <h2>🏨 酒店简介</h2>
+        <p class="text">
+            民宿位于西湖景区核心区域，步行5分钟即可到达湖畔步道。  
+            房间均面向湖景，夜间可远眺断桥风光，清晨可闻鸟鸣清风。  
+            提供24小时热水、轻食早餐、行李寄存、免费停车等服务。  
+            是休闲度假、情侣出行与深度旅游的优选住宿体验。
+        </p>
+    </section>
+
+    <!-- 酒店配套设施 -->
+    <section>
+        <h2>🛎 设施与服务</h2>
+        <span class="tag">免费WiFi</span>
+        <span class="tag">景观房</span>
+        <span class="tag">无限时热水</span>
+        <span class="tag">自助早餐</span>
+        <span class="tag">免费停车位</span>
+        <span class="tag">行李寄存</span>
+        <span class="tag">智能门锁</span>
+        <span class="tag">观景露台</span>
+        <span class="tag">24h前台</span>
+    </section>
+
+    <!-- 操作区域 -->
+    <div class="action-box">
+        <button class="btn book" onclick="location.href='createReservation.html'">📅 立即预订</button>
+        <button class="btn collect" onclick="location.href='collectionList.html'">⭐ 收藏酒店</button>
+    </div>
+
+</div>
+
+</body>
+</html>

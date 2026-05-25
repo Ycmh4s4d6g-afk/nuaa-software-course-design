@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>主题帖详情_A(普通评论)</title>
+
+<style>
+/* ========= 页面整体尺寸与手机壳结构（保留你满意比例） ========= */
+body{
+    margin:0; background:#d9d9d9;
+    padding:30px 0;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+}
+.phone{
+    width:390px; height:780px;
+    background:#000; 
+    border-radius:38px;
+    margin:auto; padding:14px;
+    box-sizing:border-box;
+    box-shadow:0 25px 55px rgba(0,0,0,.38);
+    position:relative;
+}
+.notch{
+    width:160px;height:20px;
+    background:#111; border-radius:14px;
+    position:absolute; top:12px; left:50%;
+    transform:translateX(-50%);
+}
+.screen{
+    background:#fff;width:100%;height:100%;
+    border-radius:28px;overflow:hidden;
+    padding-top:38px; box-sizing:border-box;
+}
+
+/* ========= 顶栏 ========= */
+.header{
+    text-align:center; 
+    font-size:18px;font-weight:600;
+    padding:12px 0; position:relative;
+    border-bottom:1px solid #eee;
+}
+.back{ position:absolute;left:16px;top:13px;font-size:20px;font-weight:600;}
+.logo{ position:absolute;right:16px;top:13px;color:#6d6d6d;font-size:13px;}
+
+/* ========= 主帖区域 ========= */
+.content{padding:16px;border-bottom:8px solid #f5f6f7;}
+.post-header{display:flex;align-items:center;margin-bottom:12px;}
+.avatar{width:42px;height:42px;border-radius:50%;background:#f97c1e;margin-right:12px;}
+.nickname{font-size:15px;font-weight:600;margin-bottom:2px;}
+.time{font-size:12px;color:#999;}
+.tag-btn{
+    margin-left:auto;padding:6px 12px;
+    font-size:12px;border-radius:14px;border:1px solid #ddd;
+}
+.post-title{font-size:16px;font-weight:700;margin:10px 0 6px;}
+.post-text{font-size:14px;color:#444;line-height:22px;}
+
+.img-row{display:flex;gap:6px;margin:12px 0;}
+.img-item{flex:1;height:70px;border-radius:6px;overflow:hidden;background:#eee;}
+.img-item img{width:100%;height:100%;object-fit:cover;}
+
+.info-row{
+    display:flex;border-top:1px solid #eee;margin-top:10px;padding-top:8px;
+    font-size:13px;color:#666;
+}
+.info-row span:first-child{margin-right:auto;}
+.info-row span:last-child{font-size:14px;}
+
+/* ========= 评论 A 样式（带头像 普通样式） ========= */
+.comment-section{padding-top:4px;}
+.comment-item{
+    display:flex; padding:10px 16px;
+    border-bottom:1px solid #f2f3f5;
+}
+.comment-avatar{
+    width:26px;height:26px;border-radius:50%;
+    background:#1e90ff;margin-right:10px;
+}
+.comment-body{flex:1;}
+.comment-text{font-size:14px;color:#333;margin-bottom:4px;}
+.comment-time{font-size:11px;color:#888;}
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+<div class="notch"></div>
+<div class="screen">
+
+    <div class="header">
+        <div class="back">←</div>
+        主题帖详情
+        <div class="logo">酒店预订系统</div>
+    </div>
+
+    <div class="content">
+        <div class="post-header">
+            <div class="avatar"></div>
+            <div>
+                <div class="nickname">用户 A</div>
+                <div class="time">2023-11-07 15:02</div>
+            </div>
+            <div class="tag-btn">西湖民宿推荐</div>
+        </div>
+
+        <div class="post-title">入住西湖边两天的真实体验</div>
+        <div class="post-text">
+            📍民宿靠近景区，走路 5 分钟到断桥。环境干净，早餐很好吃，非常推荐！
+        </div>
+
+        <div class="img-row">
+            <div class="img-item"><img src="杭州西湖.jpg"></div>
+            <div class="img-item"><img src="酒店内部.jpg"></div>
+            <div class="img-item"><img src="内部.jpg"></div>
+        </div>
+
+        <div class="info-row">
+            <span>杭州市</span><span>👍1088</span>
+        </div>
+    </div>
+
+    <!-- ========== 评论展示 A（正常评论版） ========== -->
+    <div class="comment-section">
+        <div class="comment-item">
+            <div class="comment-avatar"></div>
+            <div class="comment-body">
+                <div class="comment-text">房间价格怎么样？</div>
+                <div class="comment-time">11-07 15:05</div>
+            </div>
+        </div>
+
+        <div class="comment-item">
+            <div class="comment-avatar"></div>
+            <div class="comment-body">
+                <div class="comment-text">看图感觉很干净，下次去试试！</div>
+                <div class="comment-time">11-07 15:10</div>
+            </div>
+        </div>
+
+        <div class="comment-item">
+            <div class="comment-avatar"></div>
+            <div class="comment-body">
+                <div class="comment-text">求老板联系方式～</div>
+                <div class="comment-time">11-07 15:20</div>
+            </div>
+        </div>
+    </div>
+
+</div></div>
+</body>
+</html>

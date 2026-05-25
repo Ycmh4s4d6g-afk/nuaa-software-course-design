@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>取消收藏 - 酒店预订系统</title>
+
+<style>
+    body{
+        margin:0;
+        background:#f4f6fb;
+        font-family:"Segoe UI","Noto Sans SC";
+    }
+    header{
+        background:linear-gradient(120deg,#f59e0b,#d97706);
+        padding:14px 36px;
+        color:white;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        box-shadow:0 3px 12px rgba(0,0,0,.2);
+    }
+    header a{
+        color:white;
+        text-decoration:none;
+        margin-left:18px;
+        font-size:14px;
+    }
+    header a:hover{opacity:.85;}
+
+    .box{
+        width:520px;
+        margin:70px auto;
+        background:white;
+        padding:30px 32px;
+        border-radius:16px;
+        box-shadow:0 4px 18px rgba(0,0,0,.08);
+        text-align:center;
+    }
+    .hotel-name{
+        font-size:18px;
+        font-weight:700;
+        margin:12px 0 4px;
+    }
+    .hint{
+        font-size:14px;
+        color:#6b7280;
+        margin-bottom:20px;
+    }
+
+    .btn-area{
+        display:flex;
+        gap:14px;
+        margin-top:18px;
+    }
+    button{
+        flex:1;
+        padding:10px 14px;
+        border:none;
+        border-radius:8px;
+        font-size:15px;
+        font-weight:600;
+        cursor:pointer;
+        transition:.2s;
+    }
+    .confirm{
+        background:#d97706;
+        color:white;
+    }
+    .confirm:hover{filter:brightness(1.08);}
+    .cancel{
+        background:#6b7280;
+        color:white;
+    }
+    .cancel:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">⭐ 取消收藏确认</div>
+    <nav>
+        <a href="collectionList.html">返回我的收藏</a>
+        <a href="customerIndex.html">用户主页</a>
+    </nav>
+</header>
+
+<div class="box">
+
+    <div style="font-size:32px;">❓</div>
+    <div class="hotel-name">杭州西湖云舍民宿</div>
+    <div class="hint">
+        你确定要取消收藏该酒店吗？<br>
+        取消后将从“我的收藏”列表中移除，但不影响已下单的预订记录。
+    </div>
+
+    <div class="btn-area">
+        <button class="confirm" onclick="doCancel()">确认取消收藏</button>
+        <button class="cancel" onclick="location.href='collectionList.html'">返回</button>
+    </div>
+
+</div>
+
+<script>
+function doCancel(){
+    alert("已取消收藏（演示效果）");
+    // 实际系统中这里应调用后端接口并更新数据库
+    location.href="collectionList.html";
+}
+</script>
+
+</body>
+</html>

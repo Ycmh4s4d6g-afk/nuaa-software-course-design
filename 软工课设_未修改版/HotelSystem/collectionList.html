@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我的收藏 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f5f7fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#f59e0b,#d97706);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 3px 12px rgba(0,0,0,.2);
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:1100px;margin:42px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#6b7280;margin-bottom:26px;}
+
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:24px;
+    }
+
+    .card{
+        background:white;border-radius:14px;overflow:hidden;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);
+        transition:.2s;
+    }
+    .card:hover{transform:translateY(-4px);}
+
+    .img{height:180px;}
+    .img img{width:100%;height:100%;object-fit:cover;}
+
+    .info{padding:14px 16px;}
+    .name{font-size:17px;font-weight:700;margin-bottom:4px;}
+    .meta{font-size:13px;color:#71717a;margin-bottom:6px;}
+    .price{font-size:15px;font-weight:700;color:#d97706;}
+
+    .btns{padding:12px 16px;border-top:1px solid #ececec;display:flex;gap:10px;}
+    button{
+        flex:1;padding:8px;border:none;border-radius:6px;
+        cursor:pointer;font-size:13px;font-weight:600;
+    }
+    .detail{background:#d97706;color:white;}
+    .detail:hover{filter:brightness(1.08);}
+    .cancel{background:#6b7280;color:white;}
+    .cancel:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:630;">⭐ 我的收藏列表</div>
+    <nav>
+        <a href="customerIndex.html">用户主页</a>
+        <a href="hotelList.html">酒店浏览</a>
+        <a href="index.html">首页</a>
+    </nav>
+</header>
+
+<div class="page">
+
+    <div class="title">已收藏酒店</div>
+    <div class="sub">你可以取消收藏或进入酒店页面继续预订</div>
+
+    <div class="grid" id="colBox">
+
+        <!-- 收藏 1 -->
+        <div class="card">
+            <div class="img"><img src="杭州西湖.jpg"></div>
+            <div class="info">
+                <div class="name">杭州西湖云舍民宿</div>
+                <div class="meta">评分 4.7 · 景观房</div>
+                <div class="price">￥520 / 晚</div>
+            </div>
+            <div class="btns">
+                <button class="detail" onclick="location.href='hotelDetail.html'">查看详情</button>
+                <button class="cancel" onclick="cancel(this)">取消收藏</button>
+            </div>
+        </div>
+
+        <!-- 收藏 2 -->
+        <div class="card">
+            <div class="img"><img src="上海外滩.jpg"></div>
+            <div class="info">
+                <div class="name">上海外滩星程酒店</div>
+                <div class="meta">评分 4.6 · 交通便利</div>
+                <div class="price">￥598 / 晚</div>
+            </div>
+            <div class="btns">
+                <button class="detail" onclick="location.href='hotelDetail.html'">查看详情</button>
+                <button class="cancel" onclick="cancel(this)">取消收藏</button>
+            </div>
+        </div>
+
+        <!-- 收藏 3 -->
+        <div class="card">
+            <div class="img"><img src="紫峰大厦.jpg"></div>
+            <div class="info">
+                <div class="name">南京紫峰大厦精选酒店</div>
+                <div class="meta">评分 4.8 · 夜景绝佳</div>
+                <div class="price">￥488 / 晚</div>
+            </div>
+            <div class="btns">
+                <button class="detail" onclick="location.href='hotelDetail.html'">查看详情</button>
+                <button class="cancel" onclick="cancel(this)">取消收藏</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function cancel(btn){
+    btn.parentNode.parentNode.remove(); //前端演示
+    alert("收藏已取消（演示）");
+}
+</script>
+
+</body>
+</html>

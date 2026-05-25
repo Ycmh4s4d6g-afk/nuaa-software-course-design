@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>支付订单 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f5f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#10b981,#059669);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 4px 14px rgba(0,0,0,.22);
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .box{
+        width:520px;margin:50px auto;background:white;
+        padding:36px;border-radius:18px;
+        box-shadow:0 4px 18px rgba(0,0,0,.1);
+    }
+    h2{text-align:center;margin-top:0;margin-bottom:10px;}
+    .sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:26px;}
+
+    .row{margin-bottom:18px;font-size:15px;color:#374151;}
+    .row span{float:right;color:#2563eb;font-weight:bold;}
+
+    .pay-type{margin-top:14px;}
+    .pay-type label{
+        display:flex;align-items:center;
+        border:1px solid #d4d4d8;
+        padding:10px 14px;border-radius:10px;
+        margin-bottom:10px;font-size:15px;cursor:pointer;
+    }
+    input[type="radio"]{margin-right:10px;}
+
+    button{
+        width:100%;margin-top:20px;padding:12px;
+        background:#059669;border:none;border-radius:10px;
+        color:white;font-size:16px;font-weight:bold;cursor:pointer;
+    }
+    button:hover{filter:brightness(1.07);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">💳 支付订单</div>
+    <nav>
+        <a href="reservationList.html">我的订单</a>
+        <a href="index.html">首页</a>
+    </nav>
+</header>
+
+<div class="box">
+    <h2>确认订单并支付</h2>
+    <div class="sub">完成支付后订单才会正式生效</div>
+
+    <div class="row">酒店名称 <span>杭州西湖云舍民宿</span></div>
+    <div class="row">入住日期 <span>2025-02-20</span></div>
+    <div class="row">退房日期 <span>2025-02-22</span></div>
+    <div class="row" style="font-size:17px;font-weight:600;">订单金额 <span style="color:#dc2626;">￥1040</span></div>
+
+    <h3 style="margin-top:26px;font-size:18px;">选择支付方式</h3>
+
+    <div class="pay-type">
+        <label><input type="radio" name="pay" checked>支付宝支付</label>
+        <label><input type="radio" name="pay">微信支付</label>
+        <label><input type="radio" name="pay">银行卡支付（信用/借记）</label>
+    </div>
+
+    <button onclick="pay()">立即支付</button>
+</div>
+
+<script>
+function pay(){
+    alert("支付成功！正在跳转...");
+    location.href="paymentResult.html";
+}
+</script>
+
+</body>
+</html>

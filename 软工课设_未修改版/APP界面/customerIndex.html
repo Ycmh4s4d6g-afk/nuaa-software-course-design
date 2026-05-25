@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>用户中心 - 酒店预订系统</title>
+<style>
+/* ==== 通用手机壳 + UI 样式，一份复制到所有页面 ==== */
+body{
+    margin:0;
+    background:#d9d9d9;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    padding:30px 0;
+    display:flex;
+    justify-content:center;
+}
+.phone{
+    width:390px;
+    height:780px;
+    background:#000;
+    border-radius:38px;
+    padding:14px;
+    box-sizing:border-box;
+    box-shadow:0 25px 55px rgba(0,0,0,.38);
+    position:relative;
+}
+.notch{
+    width:160px;
+    height:20px;
+    background:#111;
+    border-radius:14px;
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+}
+.screen{
+    background:#fff;
+    width:100%;
+    height:100%;
+    border-radius:28px;
+    overflow:hidden;
+    box-sizing:border-box;
+    padding-top:38px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* 顶部栏 */
+.header{
+    height:52px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:18px;
+    font-weight:600;
+}
+.header .back{
+    position:absolute;
+    left:16px;
+    font-size:20px;
+    cursor:pointer;
+}
+.header .logo{
+    position:absolute;
+    right:16px;
+    font-size:13px;
+    color:#6b7280;
+}
+
+/* 主内容区域 */
+.main{
+    flex:1;
+    overflow-y:auto;
+    padding:16px;
+    box-sizing:border-box;
+}
+
+/* 文本与标题 */
+.section-title{
+    font-size:16px;
+    font-weight:600;
+    margin:6px 0 10px;
+}
+.sub-text{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:12px;
+}
+
+/* 欢迎语 */
+.greeting{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+.sub{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:16px;
+}
+
+/* 搜索表单 */
+.search-card{
+    background:#f0f9ff;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:16px;
+}
+.search-title{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+.search-subtitle{
+    font-size:12px;
+    color:#6b7280;
+    margin-bottom:12px;
+}
+.field{
+    margin-bottom:10px;
+}
+.field-label{
+    font-size:12px;
+    margin-bottom:4px;
+    color:#4b5563;
+}
+.input, select{
+    width:100%;
+    height:40px;
+    border-radius:8px;
+    border:1px solid #d1d5db;
+    padding:0 10px;
+    font-size:13px;
+    box-sizing:border-box;
+}
+.btn-search{
+    width:100%;
+    text-align:center;
+    padding:12px 0;
+    border-radius:10px;
+    background:#2563eb;
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+    border:none;
+    margin-top:8px;
+}
+
+/* 热门目的地 */
+.popular-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:12px;
+}
+.tag{
+    padding:6px 12px;
+    border-radius:16px;
+    background:#eff6ff;
+    color:#2563eb;
+    font-size:12px;
+    cursor:pointer;
+    border:1px solid #bfdbfe;
+}
+
+/* 推荐说明 */
+.recommend-hint{
+    font-size:11px;
+    color:#6b7280;
+    margin-bottom:16px;
+    line-height:1.5;
+}
+
+/* 酒店卡片 */
+.hotel-card{
+    background:#f9fafb;
+    border-radius:10px;
+    margin-bottom:12px;
+    overflow:hidden;
+    box-sizing:border-box;
+}
+.hotel-img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    display:block;
+}
+.hotel-info{
+    padding:12px;
+}
+.hotel-name{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:4px;
+}
+.hotel-location{
+    font-size:12px;
+    color:#6b7280;
+    margin-bottom:6px;
+}
+.hotel-rating{
+    font-size:12px;
+    color:#f97316;
+    margin-bottom:6px;
+}
+.hotel-price{
+    font-size:14px;
+    color:#2563eb;
+    font-weight:700;
+    margin-bottom:8px;
+}
+.hotel-btn{
+    width:100%;
+    text-align:center;
+    padding:8px 0;
+    border-radius:8px;
+    background:#2563eb;
+    color:#fff;
+    font-size:13px;
+    cursor:pointer;
+    border:none;
+}
+
+/* 快捷功能卡片 */
+.func-card{
+    background:#f9fafb;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:10px;
+    box-sizing:border-box;
+    cursor:pointer;
+}
+.func-title{
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:4px;
+}
+.func-meta{
+    font-size:12px;
+    color:#6b7280;
+    margin-bottom:4px;
+}
+.func-link{
+    font-size:12px;
+    color:#2563eb;
+    margin-top:4px;
+}
+
+/* 分割线 */
+.divider{
+    height:1px;
+    background:#e5e7eb;
+    margin:12px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+
+<div class="header">
+    <span class="back" onclick="location.href='index.html'">←</span>
+    酒店预订系统
+    <span class="logo">v1.0</span>
+</div>
+
+<div class="main">
+    <div class="greeting">欢迎回来！</div>
+    <div class="sub">发现下一间合适的房间，从这里开始。</div>
+
+    <!-- 搜索表单 -->
+    <div class="search-card">
+        <div class="search-title">搜索酒店</div>
+        <div class="search-subtitle">支持酒店查询、个性化推荐、在线预订</div>
+        
+        <div class="field">
+            <div class="field-label">目的地</div>
+            <input type="text" class="input" placeholder="如:南京/上海/北京">
+        </div>
+        
+        <div class="field">
+            <div class="field-label">入住日期</div>
+            <input type="date" class="input">
+        </div>
+        
+        <div class="field">
+            <div class="field-label">离店日期</div>
+            <input type="date" class="input">
+        </div>
+        
+        <div class="field">
+            <div class="field-label">价格上限 (元)</div>
+            <input type="number" class="input" value="500" placeholder="500">
+        </div>
+        
+        <div class="btn-search" onclick="location.href='hotelList.html'">搜索酒店</div>
+    </div>
+
+    <!-- 热门目的地 -->
+    <div class="section-title">热门目的地</div>
+    <div class="popular-tags">
+        <div class="tag" onclick="location.href='hotelList.html'">上海外滩</div>
+        <div class="tag" onclick="location.href='hotelList.html'">北京·三里屯</div>
+        <div class="tag" onclick="location.href='hotelList.html'">南京·夫子庙</div>
+        <div class="tag" onclick="location.href='hotelList.html'">杭州·西湖</div>
+    </div>
+
+    <div class="recommend-hint">推荐依据:你的浏览记录、收藏酒店、历史评分等行为数据综合得到。</div>
+
+    <div class="divider"></div>
+
+    <!-- 为你推荐 -->
+    <div class="section-title">为你推荐</div>
+    <div class="sub-text">根据你的偏好与热门趋势生成推荐列表</div>
+
+    <div class="hotel-card">
+        <img src="紫峰大厦.jpg" class="hotel-img">
+        <div class="hotel-info">
+            <div class="hotel-name">南京云栖假日酒店(示例)</div>
+            <div class="hotel-location">鼓楼区·近南京大学、含双早、地铁500m</div>
+            <div class="hotel-rating">⭐ 4.7 - 328条评价</div>
+            <div class="hotel-price">¥468起</div>
+            <div class="hotel-btn" onclick="location.href='hotelDetail.html'">查看详情</div>
+        </div>
+    </div>
+
+    <div class="hotel-card">
+        <img src="上海外滩.jpg" class="hotel-img">
+        <div class="hotel-info">
+            <div class="hotel-name">上海外滩星程酒店(示例)</div>
+            <div class="hotel-location">黄浦区·外滩旁、商务出行优选</div>
+            <div class="hotel-rating">⭐ 4.5 - 512条评价</div>
+            <div class="hotel-price">¥598起</div>
+            <div class="hotel-btn" onclick="location.href='createReservation.html'">立即预订</div>
+        </div>
+    </div>
+
+    <div class="hotel-card">
+        <img src="杭州西湖.jpg" class="hotel-img">
+        <div class="hotel-info">
+            <div class="hotel-name">杭州西湖云舍民宿(示例)</div>
+            <div class="hotel-location">西湖区·临湖景观、含早餐</div>
+            <div class="hotel-rating">⭐ 4.9 - 210条评价</div>
+            <div class="hotel-price">¥388起</div>
+            <div class="hotel-btn" onclick="location.href='createReservation.html'">立即预订</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 快捷功能 -->
+    <div class="section-title">快捷功能</div>
+    
+    <div class="func-card" onclick="location.href='reservationList.html'">
+        <div class="func-title">📄 我的预订</div>
+        <div class="func-meta">查看订单、修改或取消预订</div>
+        <div class="func-link">查看预订记录 →</div>
+    </div>
+
+    <div class="func-card" onclick="location.href='collectionList.html'">
+        <div class="func-title">❤️ 收藏酒店</div>
+        <div class="func-meta">查看你收藏的酒店并快速跳转预订</div>
+        <div class="func-link">进入收藏夹 →</div>
+    </div>
+
+    <div class="func-card" onclick="location.href='listPost.html'">
+        <div class="func-title">💬 评论中心</div>
+        <div class="func-meta">浏览与撰写酒店体验分享</div>
+        <div class="func-link">前往评论区 →</div>
+    </div>
+
+</div>
+
+    </div>
+</div>
+
+</body>
+</html>

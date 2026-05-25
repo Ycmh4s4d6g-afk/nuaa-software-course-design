@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>创建预订订单 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:900px;margin:38px auto;padding:0 26px;}
+
+    .card{
+        background:white;border-radius:18px;padding:26px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);
+        margin-bottom:24px;
+    }
+    .title{font-size:22px;font-weight:700;margin-bottom:10px;}
+
+    /* 酒店展示区 */
+    .hotel-bar{display:flex;gap:20px;align-items:center;}
+    .hotel-img{
+        width:230px;height:160px;border-radius:14px;overflow:hidden;
+        box-shadow:0 4px 12px rgba(0,0,0,.12);
+    }
+    .hotel-img img{width:100%;height:100%;object-fit:cover;}
+
+    .hotel-info{flex:1;}
+    .hotel-name{font-size:20px;font-weight:700;margin-bottom:4px;}
+    .hotel-meta{font-size:13px;color:#64748b;margin-bottom:8px;}
+    .price{font-size:18px;color:#2563eb;font-weight:700;}
+
+    /* 日期选择 */
+    .field{margin-top:16px;}
+    .field label{display:block;font-size:14px;margin-bottom:6px;}
+    .field input, .field select{
+        width:100%;padding:10px;border-radius:8px;
+        border:1px solid #d4d4d8;font-size:15px;
+    }
+
+    /* 价格展示 */
+    .total-box{
+        background:#eef6ff;border-left:6px solid #3b82f6;
+        padding:16px;border-radius:10px;margin-top:20px;
+        font-size:17px;font-weight:700;color:#1d4ed8;
+    }
+
+    /* 按钮 */
+    .btn-area{margin-top:26px;display:flex;gap:16px;}
+    button{
+        flex:1;padding:12px;border-radius:8px;border:none;
+        cursor:pointer;font-size:16px;font-weight:600;transition:.2s;
+    }
+    .submit{background:#22c55e;color:white;}
+    .submit:hover{filter:brightness(1.08);}
+    .back{background:#6b7280;color:white;}
+    .back:hover{filter:brightness(1.08);}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">📝 创建预订订单</div>
+    <nav>
+        <a href="hotelList.html">酒店列表</a>
+        <a href="reservationList.html">我的订单</a>
+        <a href="index.html">首页</a>
+    </nav>
+</header>
+
+<div class="page">
+
+    <div class="card">
+        <div class="title">🏨 酒店信息确认</div>
+
+        <div class="hotel-bar">
+            <div class="hotel-img">
+                <img src="杭州西湖.jpg">
+            </div>
+            <div class="hotel-info">
+                <div class="hotel-name">杭州西湖云舍民宿</div>
+                <div class="hotel-meta">浙江省杭州市 · 景观房 · 评分 4.7</div>
+                <div class="price">￥520 / 晚</div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>入住日期</label>
+            <input type="date" id="inDate" onchange="calc()">
+        </div>
+
+        <div class="field">
+            <label>离店日期</label>
+            <input type="date" id="outDate" onchange="calc()">
+        </div>
+
+        <div class="field">
+            <label>入住人数</label>
+            <select id="people">
+                <option>1 位</option>
+                <option selected>2 位</option>
+                <option>3 位</option>
+                <option>4 位</option>
+            </select>
+        </div>
+
+        <div class="total-box" id="totalPrice">
+            请选择日期以计算费用
+        </div>
+
+        <div class="btn-area">
+            <button class="submit" onclick="submitOrder()">提交预订</button>
+            <button class="back" onclick="history.back()">返回</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function calc(){
+    let pricePerNight = 520;
+    let inDate = new Date(document.getElementById("inDate").value);
+    let outDate = new Date(document.getElementById("outDate").value);
+    if(!document.getElementById("inDate").value || !document.getElementById("outDate").value) return;
+
+    let nights = Math.ceil((outDate - inDate) / 86400000);
+    if(nights <= 0){
+        document.getElementById("totalPrice").innerHTML="⚠ 离店日期需大于入住日期!";
+        return;
+    }
+    document.getElementById("totalPrice").innerHTML=`预计消费：¥ ${nights * pricePerNight}（共 ${nights} 晚）`;
+}
+
+function submitOrder(){
+    alert("订单提交成功！（演示）");
+    location.href="reservationList.html";
+}
+</script>
+
+</body>
+</html>

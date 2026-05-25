@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我的预订 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:1100px;margin:40px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:26px;}
+
+    /* 列表区块 */
+    .order{
+        background:white;border-radius:14px;padding:16px;margin-bottom:18px;
+        box-shadow:0 4px 14px rgba(0,0,0,.07);
+        display:flex;gap:18px;align-items:center;
+    }
+    .img{
+        width:160px;height:108px;border-radius:10px;overflow:hidden;
+    }
+    .img img{width:100%;height:100%;object-fit:cover;}
+
+    .info-flex{flex:1;}
+    .hotel-name{font-size:18px;font-weight:600;margin-bottom:4px;}
+    .meta{font-size:13px;color:#6b7280;margin-bottom:6px;}
+    .price{color:#2563eb;font-weight:700;font-size:15px;}
+    .status{font-size:13px;font-weight:600;margin-top:4px;}
+
+    .act{
+        display:flex;flex-direction:column;gap:6px;
+    }
+    button{
+        padding:6px 14px;border:none;border-radius:6px;
+        font-size:13px;font-weight:600;cursor:pointer;transition:.2s;
+    }
+    .detail{background:#2563eb;color:white;}
+    .detail:hover{filter:brightness(1.08);}
+    .modify{background:#22c55e;color:white;}
+    .modify:hover{filter:brightness(1.08);}
+    .cancel{background:#dc2626;color:white;}
+    .cancel:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">📄 我的预订记录</div>
+    <nav>
+        <a href="customerIndex.html">用户主页</a>
+        <a href="hotelList.html">酒店列表</a>
+        <a href="index.html">系统首页</a>
+    </nav>
+</header>
+
+<div class="page">
+
+    <div class="title">历史预订订单</div>
+    <div class="sub">可查看详情、修改订单或取消预订</div>
+
+    <!-- 订单示例 1 -->
+    <div class="order">
+        <div class="img"><img src="杭州西湖.jpg"></div>
+        <div class="info-flex">
+            <div class="hotel-name">杭州西湖云舍民宿</div>
+            <div class="meta">入住：2025-01-12  ·  离店：2025-01-14</div>
+            <div class="price">¥ 1040</div>
+            <div class="status" style="color:#22c55e;">✔ 已完成</div>
+        </div>
+        <div class="act">
+            <button class="detail" onclick="location.href='reservationDetail.html'">查看详情</button>
+            <button class="modify" onclick="location.href='editReservation.html'">修改订单</button>
+        </div>
+    </div>
+
+    <!-- 订单示例 2 -->
+    <div class="order">
+        <div class="img"><img src="上海外滩.jpg"></div>
+        <div class="info-flex">
+            <div class="hotel-name">上海外滩星程酒店</div>
+            <div class="meta">入住：2025-02-03  ·  离店：2025-02-06</div>
+            <div class="price">¥ 1794</div>
+            <div class="status" style="color:#dc2626;">⏳ 待付款</div>
+        </div>
+        <div class="act">
+            <button class="detail" onclick="location.href='reservationDetail.html'">查看详情</button>
+            <button class="cancel" onclick="alert('预订取消成功（演示）')">取消订单</button>
+        </div>
+    </div>
+
+    <!-- 订单示例 3 -->
+    <div class="order">
+        <div class="img"><img src="紫峰大厦.jpg"></div>
+        <div class="info-flex">
+            <div class="hotel-name">南京紫峰大厦精选酒店</div>
+            <div class="meta">入住：2025-03-18  ·  离店：2025-03-20</div>
+            <div class="price">¥ 976</div>
+            <div class="status" style="color:#2563eb;">🕓 已预订</div>
+        </div>
+        <div class="act">
+            <button class="detail" onclick="location.href='reservationDetail.html'">查看详情</button>
+            <button class="modify" onclick="location.href='editReservation.html'">修改订单</button>
+            <button class="cancel" onclick="alert('预订已取消（演示）')">取消订单</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

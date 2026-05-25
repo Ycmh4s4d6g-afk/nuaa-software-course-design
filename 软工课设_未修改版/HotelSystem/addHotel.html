@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>新增酒店 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .box{
+        width:650px;margin:50px auto;
+        background:white;padding:38px 50px;border-radius:20px;
+        box-shadow:0 6px 20px rgba(0,0,0,.08);
+    }
+
+    .title{font-size:24px;font-weight:700;margin-bottom:8px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
+
+    .field{margin-bottom:18px;}
+    .field label{display:block;color:#475569;font-size:13px;margin-bottom:6px;}
+    .field input,.field textarea,.field select{
+        width:100%;padding:10px 14px;border-radius:8px;
+        border:1px solid #d4d4d8;font-size:14px;outline:none;
+    }
+    textarea{resize:none;height:120px;}
+
+    .btn{
+        width:49%;padding:12px;border-radius:8px;
+        font-size:15px;font-weight:600;border:none;margin-top:10px;
+        cursor:pointer;transition:.2s;
+    }
+    .save{background:#22c55e;color:white;}
+    .save:hover{filter:brightness(1.07);}
+    .back{background:#6b7280;color:white;}
+    .back:hover{filter:brightness(1.07);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">🏨 管理端 | 新增酒店</div>
+    <nav>
+        <a href="manageHotel.html">酒店管理</a>
+        <a href="adminIndex.html">管理员首页</a>
+        <a href="index.html">系统首页</a>
+    </nav>
+</header>
+
+<div class="box">
+    <div class="title">新增酒店信息</div>
+    <div class="sub">填写酒店基础资料与展示内容后提交发布</div>
+
+    <div class="field">
+        <label>酒店名称</label>
+        <input type="text" placeholder="如：杭州西湖云舍民宿">
+    </div>
+
+    <div class="field">
+        <label>酒店所在地</label>
+        <input type="text" placeholder="如：浙江省杭州市西湖区">
+    </div>
+
+    <div class="field">
+        <label>起始价格 (￥ / 晚)</label>
+        <input type="number" placeholder="如：520">
+    </div>
+
+    <div class="field">
+        <label>评分 (0.0 - 5.0)</label>
+        <input type="number" step="0.1" placeholder="如：4.7">
+    </div>
+
+    <div class="field">
+        <label>酒店主图片</label>
+        <input type="file" accept=".jpg,.png,.jpeg">
+        <!-- 如想默认展示，示例写法👇 -->
+        <!-- <img src="杭州西湖.jpg" width="200" style="margin-top:8px;border-radius:6px;"> -->
+    </div>
+
+    <div class="field">
+        <label>酒店简介</label>
+        <textarea placeholder="酒店环境优美、近湖景…（演示示例内容）"></textarea>
+    </div>
+
+    <div class="field">
+        <label>酒店设施（使用逗号隔开）</label>
+        <input type="text" placeholder="WiFi, 自助早餐, 景观房, 停车场, 健身房">
+    </div>
+
+    <button class="btn save" onclick="save()">💾 提交发布</button>
+    <button class="btn back" onclick="location.href='manageHotel.html'">返回</button>
+</div>
+
+<script>
+function save(){
+    alert("酒店已添加！（演示）");
+    location.href="manageHotel.html";
+}
+</script>
+
+</body>
+</html>

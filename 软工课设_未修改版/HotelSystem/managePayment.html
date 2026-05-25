@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>支付记录管理 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#0ea5e9,#0369a1);
+        padding:14px 36px;color:white;display:flex;
+        justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:16px;text-decoration:none;}
+    table{
+        width:1000px;margin:40px auto;border-collapse:collapse;
+        background:white;border-radius:14px;overflow:hidden;
+        box-shadow:0 4px 16px rgba(0,0,0,.1);
+    }
+    th,td{padding:14px;border-bottom:1px solid #e5e7eb;text-align:center;font-size:14px;}
+    th{background:#e0f2fe;color:#0c4a6e;font-weight:700;}
+    button{
+        padding:6px 12px;border:none;border-radius:6px;font-size:13px;font-weight:600;
+        cursor:pointer;margin:2px;
+    }
+    .view{background:#2563eb;color:white;}
+    .refund{background:#dc2626;color:white;}
+    .view:hover,.refund:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h3>🧾 支付记录后台管理</h3>
+    <nav>
+        <a href="adminIndex.html">返回管理首页</a>
+        <a href="index.html">回到系统首页</a>
+    </nav>
+</header>
+
+<table>
+    <tr>
+        <th>支付单号</th><th>用户名</th><th>酒店</th><th>金额</th><th>状态</th><th>操作</th>
+    </tr>
+    <tr>
+        <td>20250220101</td><td>王明</td><td>杭州西湖云舍</td><td>¥1040</td><td>已支付</td>
+        <td>
+            <button class="view" onclick="location.href='reservationDetail.html'">查看订单</button>
+            <button class="refund" onclick="location.href='refundApply.html'">发起退款</button>
+        </td>
+    </tr>
+    <tr>
+        <td>20250115088</td><td>Alice</td><td>上海外滩星程</td><td>¥980</td><td>退款处理中</td>
+        <td><button class="view" onclick="location.href='reservationDetail.html'">查看订单</button></td>
+    </tr>
+    <tr>
+        <td>20241231045</td><td>李亮</td><td>南京紫峰大厦</td><td>¥820</td><td>已退款</td>
+        <td><button class="view" onclick="location.href='reservationDetail.html'">查看订单</button></td>
+    </tr>
+</table>
+
+</body>
+</html>

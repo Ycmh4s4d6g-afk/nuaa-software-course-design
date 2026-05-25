@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>评论审核 - 酒店预订系统后台</title>
+
+<style>
+    body{
+        margin:0;
+        background:#f4f6fb;
+        font-family:"Noto Sans SC","Segoe UI";
+    }
+    header{
+        background:linear-gradient(120deg,#6366f1,#4338ca);
+        color:white;
+        padding:14px 36px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        box-shadow:0 3px 14px rgba(0,0,0,.22);
+    }
+    header a{
+        color:white;
+        text-decoration:none;
+        margin-left:16px;
+        font-size:14px;
+    }
+    header a:hover{opacity:.85;}
+
+    .card{
+        max-width:720px;
+        margin:40px auto;
+        background:white;
+        border-radius:18px;
+        box-shadow:0 4px 20px rgba(0,0,0,.12);
+        padding:26px 30px 30px;
+    }
+
+    h2{
+        margin-top:0;
+        margin-bottom:8px;
+        font-size:22px;
+    }
+    .meta{
+        font-size:13px;
+        color:#6b7280;
+        margin-bottom:16px;
+    }
+    .meta span{margin-right:18px;}
+
+    .hotel{
+        font-size:14px;
+        margin-bottom:10px;
+    }
+    .hotel b{color:#111827;}
+
+    .content-box{
+        border-radius:12px;
+        border:1px solid #e5e7eb;
+        background:#f9fafb;
+        padding:14px 16px;
+        font-size:14px;
+        color:#374151;
+        line-height:1.6;
+        margin-bottom:18px;
+        max-height:220px;
+        overflow-y:auto;
+    }
+
+    label{
+        display:block;
+        font-size:14px;
+        font-weight:600;
+        margin:12px 0 6px;
+    }
+    textarea{
+        width:100%;
+        height:90px;
+        border-radius:10px;
+        border:1px solid #d1d5db;
+        padding:10px;
+        resize:none;
+        font-size:13px;
+    }
+
+    .btn-area{
+        margin-top:20px;
+        display:flex;
+        gap:14px;
+    }
+    button{
+        flex:1;
+        padding:10px 0;
+        border:none;
+        border-radius:9px;
+        font-size:15px;
+        font-weight:600;
+        cursor:pointer;
+        transition:.2s;
+    }
+    .pass{
+        background:#16a34a;
+        color:white;
+    }
+    .pass:hover{filter:brightness(1.08);}
+    .reject{
+        background:#dc2626;
+        color:white;
+    }
+    .reject:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">📝 评论审核详情</div>
+    <nav>
+        <a href="managePost.html">返回评论管理列表</a>
+        <a href="adminIndex.html">管理员首页</a>
+    </nav>
+</header>
+
+<div class="card">
+
+    <h2>西湖云舍民宿体验 · 景色太赞！</h2>
+
+    <div class="meta">
+        <span>评论用户：小陈</span>
+        <span>评分：★★★★★</span>
+        <span>提交时间：2025-02-10  14:32</span>
+    </div>
+
+    <div class="hotel">
+        关联酒店：<b>杭州西湖云舍民宿</b>
+    </div>
+
+    <div class="content-box">
+        房间干净整洁，落地窗直接面向西湖，清晨拉开窗帘的时候真的很治愈。
+        前台服务态度很好，帮忙提前办理入住，还推荐了周边的步行路线。
+        早餐是中式为主，种类不算特别多，但味道不错。
+        唯一的小问题是周末价格稍微偏高，不过整体体验仍然非常满意，下次还会再来。
+    </div>
+
+    <label>审核意见（可选填，仅内部记录或反馈给用户）</label>
+    <textarea id="comment" placeholder="例如：内容真实、无违规用语，予以通过；或存在广告/攻击性言论，予以驳回等说明。"></textarea>
+
+    <div class="btn-area">
+        <button class="pass" onclick="approve()">通过审核</button>
+        <button class="reject" onclick="reject()">驳回评论</button>
+    </div>
+
+</div>
+
+<script>
+function approve(){
+    alert("该评论已通过审核。（演示效果）");
+    location.href = "managePost.html";
+}
+
+function reject(){
+    var reason = document.getElementById("comment").value.trim();
+    if(reason === ""){
+        if(!confirm("未填写审核意见，确定直接驳回该评论吗？")) return;
+    }
+    alert("该评论已被驳回。\n审核意见：" + (reason || "无"));
+    location.href = "managePost.html";
+}
+</script>
+
+</body>
+</html>

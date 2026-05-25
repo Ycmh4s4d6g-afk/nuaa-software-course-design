@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>删除酒店 - 管理后台</title>
+
+<style>
+    body{margin:0;background:#fff6f6;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#ef4444,#dc2626);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .box{
+        width:600px;margin:60px auto;background:white;
+        padding:40px 46px;border-radius:20px;
+        box-shadow:0 4px 18px rgba(0,0,0,.1);
+        border-top:5px solid #dc2626;
+    }
+
+    .title{text-align:center;font-size:24px;font-weight:700;color:#dc2626;margin-bottom:8px;}
+    .sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:26px;}
+
+    .warn{
+        background:#fee2e2;border-left:6px solid #dc2626;
+        padding:14px;border-radius:10px;margin-bottom:24px;
+        color:#7f1d1d;font-size:14px;line-height:1.8;
+    }
+
+    .info{
+        background:#fef3c7;border-radius:10px;
+        padding:14px;margin-bottom:22px;font-size:14px;
+        line-height:1.7;color:#78350f;
+    }
+
+    .field label{display:block;margin-bottom:6px;font-size:13px;}
+    .field input{
+        width:100%;padding:10px;border-radius:8px;
+        border:1px solid #d4d4d8;margin-bottom:18px;font-size:14px;
+    }
+
+    .btn{
+        width:48%;padding:12px;border:none;border-radius:8px;
+        font-size:15px;font-weight:600;cursor:pointer;
+        transition:.2s;
+    }
+    .danger{background:#dc2626;color:white;}
+    .danger:hover{filter:brightness(1.08);}
+    .back{background:#6b7280;color:white;}
+    .back:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">⚠ 删除酒店资料</div>
+    <nav>
+        <a href="manageHotel.html">返回酒店管理</a>
+        <a href="adminIndex.html">管理员首页</a>
+        <a href="index.html">系统首页</a>
+    </nav>
+</header>
+
+<div class="box">
+
+    <div class="title">确认进行删除？</div>
+    <div class="sub">该操作无法恢复，请务必确认！</div>
+
+    <div class="warn">
+        你正在尝试永久删除酒店数据，包括酒店图片、介绍、标签、评分和所有展示信息。  
+        删除后将立即从系统中消失，用户将无法继续查看或预订该酒店。
+    </div>
+
+    <!-- 信息展示，可用于论文截图证明后台有完整删除功能 -->
+    <div class="info">
+        🏨 <b>酒店名称：</b>杭州西湖云舍民宿 <br>
+        📍 <b>地址：</b>浙江省杭州市西湖区 <br>
+        💰 <b>起始价格：</b>￥520 / 晚 <br>
+        ⭐ <b>评分：</b>4.7
+    </div>
+
+    <div class="field">
+        <label>为确认删除，请输入酒店名称：</label>
+        <input type="text" id="check" placeholder="请输入：杭州西湖云舍民宿">
+    </div>
+
+    <button class="btn danger" onclick="delHotel()">确认删除</button>
+    <button class="btn back" onclick="location.href='manageHotel.html'">取消并返回</button>
+
+</div>
+
+<script>
+function delHotel(){
+    if(document.getElementById("check").value !== "杭州西湖云舍民宿"){
+        alert("酒店名称输入不一致，删除终止！");
+        return;
+    }
+    alert("酒店已成功删除！（演示）");
+    location.href="manageHotel.html";
+}
+</script>
+
+</body>
+</html>

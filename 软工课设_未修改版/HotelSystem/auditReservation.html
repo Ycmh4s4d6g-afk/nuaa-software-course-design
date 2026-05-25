@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>审核预订订单 - 酒店预订系统管理员后台</title>
+
+<style>
+    body{margin:0;background:#f4f7fb;font-family:"Noto Sans SC","Segoe UI";}
+    header{
+        background:linear-gradient(120deg,#2563EB,#1E40AF);
+        color:white;padding:14px 36px;font-size:18px;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 4px 16px rgba(0,0,0,.22);
+    }
+    header a{color:white;text-decoration:none;margin-left:16px;}
+    header a:hover{opacity:0.9;}
+
+    .card{
+        width:540px;margin:60px auto;background:white;
+        padding:34px;border-radius:16px;
+        box-shadow:0 4px 22px rgba(0,0,0,.1);
+    }
+    h2{text-align:center;margin-bottom:16px;}
+
+    .field{
+        margin-bottom:12px;font-size:15px;color:#374151;
+        display:flex;justify-content:space-between;
+    }
+
+    textarea{
+        width:100%;height:80px;margin-top:6px;padding:10px;
+        border-radius:8px;border:1px solid #cbd5e1;resize:none;
+    }
+
+    .btn-area{margin-top:24px;display:flex;gap:14px;}
+    button{
+        flex:1;padding:12px;border:none;border-radius:8px;
+        font-size:15px;font-weight:bold;cursor:pointer;
+    }
+    .pass{background:#16A34A;color:white;}
+    .pass:hover{filter:brightness(1.08);}
+    .deny{background:#DC2626;color:white;}
+    .deny:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>🗂 订单审核界面</div>
+    <nav>
+        <a href="manageReservation.html">返回订单管理</a>
+        <a href="adminIndex.html">后台主页</a>
+    </nav>
+</header>
+
+<div class="card">
+
+    <h2>待审核订单</h2>
+
+    <div class="field"><b>用户:</b><span>小陈</span></div>
+    <div class="field"><b>酒店:</b><span>杭州西湖云舍民宿</span></div>
+    <div class="field"><b>入住日期:</b><span>2025-02-20</span></div>
+    <div class="field"><b>离店日期:</b><span>2025-02-22</span></div>
+    <div class="field"><b>金额:</b><span style="color:#DC2626;font-weight:700;">￥1040</span></div>
+    <div class="field"><b>状态:</b><span>待审核</span></div>
+
+    <h3 style="margin-top:20px;">审核操作</h3>
+
+    <textarea id="denyReason" placeholder="如拒绝，请填写原因（行程冲突 / 资料不全等）"></textarea>
+
+    <div class="btn-area">
+        <button class="pass" onclick="approve()">审核通过</button>
+        <button class="deny" onclick="deny()">驳回订单</button>
+    </div>
+
+</div>
+
+<script>
+function approve(){
+    alert("订单已通过审核 ✔");
+    location.href="manageReservation.html";
+}
+
+function deny(){
+    let msg = document.getElementById("denyReason").value;
+    if(msg.trim()===''){ alert("请填写驳回理由！"); return; }
+    alert("订单已驳回 ❌\n理由：" + msg);
+    location.href="manageReservation.html";
+}
+</script>
+
+</body>
+</html>

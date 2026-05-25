@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>支付订单 - 酒店预订系统</title>
+<style>
+/* ==== 通用手机壳 + UI 样式，一份复制到所有页面 ==== */
+body{
+    margin:0;
+    background:#d9d9d9;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    padding:30px 0;
+    display:flex;
+    justify-content:center;
+}
+.phone{
+    width:390px;
+    height:780px;
+    background:#000;
+    border-radius:38px;
+    padding:14px;
+    box-sizing:border-box;
+    box-shadow:0 25px 55px rgba(0,0,0,.38);
+    position:relative;
+}
+.notch{
+    width:160px;
+    height:20px;
+    background:#111;
+    border-radius:14px;
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+}
+.screen{
+    background:#fff;
+    width:100%;
+    height:100%;
+    border-radius:28px;
+    overflow:hidden;
+    box-sizing:border-box;
+    padding-top:38px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* 顶部栏 */
+.header{
+    height:52px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:18px;
+    font-weight:600;
+}
+.header .back{
+    position:absolute;
+    left:16px;
+    font-size:20px;
+    cursor:pointer;
+}
+.header .logo{
+    position:absolute;
+    right:16px;
+    font-size:13px;
+    color:#6b7280;
+}
+
+/* 主内容区域 */
+.main{
+    flex:1;
+    overflow-y:auto;
+    padding:16px;
+    box-sizing:border-box;
+}
+
+/* 文本与标题 */
+.section-title{
+    font-size:18px;
+    font-weight:600;
+    margin:20px 0 8px;
+    text-align:center;
+}
+.sub-text{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+/* 订单信息 */
+.order-info{
+    background:#f9fafb;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:16px;
+}
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+}
+.info-row:last-child{
+    border-bottom:none;
+}
+.info-label{
+    color:#6b7280;
+}
+.info-value{
+    color:#374151;
+    font-weight:500;
+}
+.info-amount{
+    color:#dc2626;
+    font-weight:700;
+    font-size:16px;
+}
+
+/* 支付方式 */
+.pay-section{
+    margin-top:20px;
+}
+.pay-title{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:12px;
+}
+.pay-option{
+    display:flex;
+    align-items:center;
+    border:1px solid #d1d5db;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:10px;
+    font-size:14px;
+    cursor:pointer;
+}
+.pay-option input[type="radio"]{
+    margin-right:10px;
+}
+
+/* 按钮 */
+.btn-pay{
+    width:100%;
+    text-align:center;
+    padding:14px 0;
+    border-radius:18px;
+    background:#059669;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    border:none;
+    margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+
+<div class="header">
+    <span class="back" onclick="location.href='reservationList.html'">←</span>
+    支付订单
+    <span class="logo">酒店预订系统</span>
+</div>
+
+<div class="main">
+    <div class="section-title">确认订单并支付</div>
+    <div class="sub-text">完成支付后订单才会正式生效</div>
+
+    <div class="order-info">
+        <div class="info-row">
+            <span class="info-label">酒店名称</span>
+            <span class="info-value">杭州西湖云舍民宿</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">入住日期</span>
+            <span class="info-value">2025-02-20</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">退房日期</span>
+            <span class="info-value">2025-02-22</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">订单金额</span>
+            <span class="info-amount">￥1040</span>
+        </div>
+    </div>
+
+    <div class="pay-section">
+        <div class="pay-title">选择支付方式</div>
+        
+        <div class="pay-option">
+            <input type="radio" name="pay" id="alipay" checked>
+            <label for="alipay" style="margin:0;cursor:pointer;flex:1;">支付宝支付</label>
+        </div>
+        
+        <div class="pay-option">
+            <input type="radio" name="pay" id="wechat">
+            <label for="wechat" style="margin:0;cursor:pointer;flex:1;">微信支付</label>
+        </div>
+        
+        <div class="pay-option">
+            <input type="radio" name="pay" id="bank">
+            <label for="bank" style="margin:0;cursor:pointer;flex:1;">银行卡支付（信用/借记）</label>
+        </div>
+    </div>
+
+    <div class="btn-pay" onclick="pay()">立即支付</div>
+
+</div>
+
+    </div>
+</div>
+
+<script>
+function pay(){
+    alert("支付成功！正在跳转...");
+    location.href="paymentResult.html";
+}
+</script>
+
+</body>
+</html>

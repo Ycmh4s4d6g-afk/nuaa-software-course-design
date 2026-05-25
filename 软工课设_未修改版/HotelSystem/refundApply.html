@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>退款申请 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f5f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    .box{
+        width:540px;margin:70px auto;background:white;
+        padding:34px;border-radius:16px;
+        box-shadow:0 4px 18px rgba(0,0,0,.1);
+    }
+    h2{text-align:center;margin-bottom:10px;}
+    label{font-size:14px;font-weight:600;}
+    textarea,input{
+        width:100%;margin-top:6px;margin-bottom:18px;
+        padding:10px;border-radius:8px;border:1px solid #d1d5db;
+    }
+    button{
+        width:100%;padding:12px;font-size:15px;font-weight:600;
+        background:#dc2626;color:white;border:none;border-radius:8px;cursor:pointer;
+    }
+    button:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+<div class="box">
+    <h2>退款申请</h2>
+    <label>退款订单号</label>
+    <input type="text" placeholder="如：20250220101">
+    
+    <label>退款原因说明</label>
+    <textarea rows="4" placeholder="如：行程变更 / 下错订单 / 感染生病等"></textarea>
+
+    <label>退款金额</label>
+    <input type="text" value="￥1040">
+
+    <button onclick="apply()">提交退款申请</button>
+</div>
+
+<script>
+function apply(){
+    alert("退款申请已提交，等待管理员审核");
+    location.href="reservationList.html";
+}
+</script>
+</body>
+</html>

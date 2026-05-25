@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>用户中心 - 酒店推荐预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;}
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        color:#fff;padding:14px 36px;
+        display:flex;justify-content:space-between;align-items:center;
+        font-size:15px;
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;}
+    header a:hover{opacity:.8;}
+
+    /* 主页面容器 */
+    .page{max-width:1200px;margin:40px auto;padding:0 26px;}
+
+    .greeting{
+        font-size:22px;font-weight:600;margin-bottom:10px;
+    }
+    .sub{
+        font-size:13px;color:#64748b;margin-bottom:24px;
+    }
+
+    /* 快捷功能入口 */
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:22px;
+    }
+    .card{
+        background:white;
+        border-radius:18px;
+        padding:22px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.07);
+        cursor:pointer;
+        transition:.2s;
+    }
+    .card:hover{transform:translateY(-3px);}
+    .card-title{font-size:17px;font-weight:600;margin-bottom:6px;}
+    .card-desc{font-size:13px;color:#6b7280;margin-bottom:6px;}
+    .card-link{font-size:13px;color:#2563eb;margin-top:4px;}
+
+    /* 分区标题 */
+    .section-title{
+        font-size:18px;font-weight:600;margin:50px 0 14px;
+    }
+
+    /* 页脚 */
+    footer{
+        margin-top:50px;text-align:center;
+        font-size:12px;color:#9ca3af;padding-bottom:16px;
+    }
+
+</style>
+</head>
+<body>
+
+<!-- 顶部导航保持与前端统一 -->
+<header>
+    <div style="font-weight:600;font-size:18px;">🏨 用户中心</div>
+    <nav>
+        <a href="index.html">首页</a>
+        <a href="hotelList.html">查找酒店</a>
+        <a href="reservationList.html">我的预订</a>
+        <a href="collectionList.html">收藏夹</a>
+        <a href="changeUserInfo.html">编辑资料</a>
+        <a href="signin.html">退出登录</a>
+    </nav>
+</header>
+
+<div class="page">
+
+    <!-- 顶部欢迎语 -->
+    <div class="greeting">欢迎回来！</div>
+    <div class="sub">你现在可以进行预订、收藏酒店、查看历史订单和发布评论。</div>
+
+    <!-- 快捷入口宫格区 -->
+    <div class="grid">
+
+        <div class="card" onclick="location.href='hotelList.html'">
+            <div class="card-title">🔍 查找酒店</div>
+            <div class="card-desc">浏览酒店信息并查看房型详情</div>
+            <div class="card-link">进入酒店列表 →</div>
+        </div>
+
+        <div class="card" onclick="location.href='reservationList.html'">
+            <div class="card-title">📄 我的预订</div>
+            <div class="card-desc">查看订单、修改或取消预订</div>
+            <div class="card-link">查看预订记录 →</div>
+        </div>
+
+        <div class="card" onclick="location.href='collectionList.html'">
+            <div class="card-title">❤️ 收藏酒店</div>
+            <div class="card-desc">查看你收藏的酒店并快速跳转预订</div>
+            <div class="card-link">进入收藏夹 →</div>
+        </div>
+
+        <div class="card" onclick="location.href='listPost.html'">
+            <div class="card-title">💬 评论中心</div>
+            <div class="card-desc">浏览与撰写酒店体验分享</div>
+            <div class="card-link">前往评论区 →</div>
+        </div>
+
+        <div class="card" onclick="location.href='notificationList.html'">
+            <div class="card-title">🔔 我的通知</div>
+            <div class="card-desc">查看订单提醒、支付回执等系统消息</div>
+            <div class="card-link">查看通知 →</div>
+        </div>
+
+        <div class="card" onclick="location.href='changeUserInfo.html'">
+            <div class="card-title">👤 账号信息</div>
+            <div class="card-desc">编辑个人资料、修改密码或注销账户</div>
+            <div class="card-link">管理个人信息 →</div>
+        </div>
+
+    </div>
+
+    <footer>酒店推荐预订系统 · 普通用户中心页面示例</footer>
+</div>
+
+</body>
+</html>

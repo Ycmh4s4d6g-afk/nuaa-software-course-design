@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>新增酒店 - 酒店预订系统</title>
+<style>
+/* ==== 通用手机壳 + UI 样式，一份复制到所有页面 ==== */
+body{
+    margin:0;
+    background:#d9d9d9;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    padding:30px 0;
+    display:flex;
+    justify-content:center;
+}
+.phone{
+    width:390px;
+    height:780px;
+    background:#000;
+    border-radius:38px;
+    padding:14px;
+    box-sizing:border-box;
+    box-shadow:0 25px 55px rgba(0,0,0,.38);
+    position:relative;
+}
+.notch{
+    width:160px;
+    height:20px;
+    background:#111;
+    border-radius:14px;
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+}
+.screen{
+    background:#fff;
+    width:100%;
+    height:100%;
+    border-radius:28px;
+    overflow:hidden;
+    box-sizing:border-box;
+    padding-top:38px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* 顶部栏 */
+.header{
+    height:52px;
+    border-bottom:1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:18px;
+    font-weight:600;
+}
+.header .back{
+    position:absolute;
+    left:16px;
+    font-size:20px;
+    cursor:pointer;
+}
+.header .logo{
+    position:absolute;
+    right:16px;
+    font-size:13px;
+    color:#6b7280;
+}
+
+/* 主内容区域 */
+.main{
+    flex:1;
+    overflow-y:auto;
+    padding:16px;
+    box-sizing:border-box;
+    }
+
+/* 文本与标题 */
+.section-title{
+    font-size:16px;
+    font-weight:600;
+    margin:6px 0 12px;
+}
+.sub-text{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:16px;
+}
+
+/* 表单控件 */
+.field{
+    margin-bottom:16px;
+}
+.field-label{
+    font-size:13px;
+    margin-bottom:6px;
+    color:#4b5563;
+}
+.input, select, textarea{
+    width:100%;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+    padding:10px 12px;
+    font-size:13px;
+    box-sizing:border-box;
+}
+.input, select{
+    height:44px;
+    }
+textarea{
+    resize:none;
+    height:100px;
+}
+
+/* 按钮 */
+.btn-row{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+    .btn{
+    flex:1;
+    text-align:center;
+    padding:12px 0;
+    border-radius:18px;
+    font-size:14px;
+    cursor:pointer;
+    border:none;
+    }
+.btn-save{
+    background:#22c55e;
+    color:#fff;
+}
+.btn-back{
+    background:#6b7280;
+    color:#fff;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+
+<div class="header">
+    <span class="back" onclick="location.href='manageHotel.html'">←</span>
+    新增酒店
+    <span class="logo">酒店预订系统</span>
+</div>
+
+<div class="main">
+    <div class="section-title">新增酒店信息</div>
+    <div class="sub-text">填写酒店基础资料与展示内容后提交发布</div>
+
+    <div class="field">
+        <div class="field-label">酒店名称</div>
+        <input type="text" class="input" placeholder="如：杭州西湖云舍民宿">
+    </div>
+
+    <div class="field">
+        <div class="field-label">酒店所在地</div>
+        <input type="text" class="input" placeholder="如：浙江省杭州市西湖区">
+    </div>
+
+    <div class="field">
+        <div class="field-label">起始价格 (￥ / 晚)</div>
+        <input type="number" class="input" placeholder="如：520">
+    </div>
+
+    <div class="field">
+        <div class="field-label">评分 (0.0 - 5.0)</div>
+        <input type="number" step="0.1" class="input" placeholder="如：4.7">
+    </div>
+
+    <div class="field">
+        <div class="field-label">酒店主图片</div>
+        <input type="file" class="input" accept=".jpg,.png,.jpeg">
+    </div>
+
+    <div class="field">
+        <div class="field-label">酒店简介</div>
+        <textarea class="input" placeholder="酒店环境优美、近湖景…（演示示例内容）"></textarea>
+    </div>
+
+    <div class="field">
+        <div class="field-label">酒店设施（使用逗号隔开）</div>
+        <input type="text" class="input" placeholder="WiFi, 自助早餐, 景观房, 停车场, 健身房">
+    </div>
+
+    <div class="btn-row">
+        <div class="btn btn-save" onclick="save()">💾 提交发布</div>
+        <div class="btn btn-back" onclick="location.href='manageHotel.html'">返回</div>
+    </div>
+
+</div>
+
+    </div>
+</div>
+
+<script>
+function save(){
+    alert("酒店已添加！（演示）");
+    location.href="manageHotel.html";
+}
+</script>
+
+</body>
+</html>

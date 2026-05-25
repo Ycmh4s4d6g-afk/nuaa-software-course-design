@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>酒店列表 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f5f7fa;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    /* 页面主体 */
+    .page{max-width:1200px;margin:40px auto;padding:0 26px;}
+
+    .title{font-size:22px;font-weight:600;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
+
+    /* 酒店卡片布局 */
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:26px;
+    }
+    .card{
+        background:white;border-radius:16px;
+        overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.07);
+        transition:.25s;cursor:pointer;
+    }
+    .card:hover{transform:translateY(-5px);}
+
+    .img-box{height:200px;overflow:hidden;}
+    .img-box img{
+        width:100%;height:100%;object-fit:cover;transition:.3s;
+    }
+    .card:hover img{transform:scale(1.05);}
+
+    .info{padding:15px 18px;}
+    .name{font-size:17px;font-weight:600;margin-bottom:4px;}
+    .meta{font-size:13px;color:#6b7280;margin-bottom:6px;}
+    .rate{color:#f97316;font-weight:700;margin-right:5px;}
+    .price{color:#2563eb;font-weight:700;}
+
+    .btn-area{
+        padding:12px 18px;border-top:1px solid #e5e7eb;
+        display:flex;justify-content:space-between;
+    }
+    .btn{
+        padding:8px 16px;border-radius:6px;font-size:13px;
+        border:none;cursor:pointer;transition:.2s;
+    }
+    .detail{background:#2563eb;color:white;}
+    .detail:hover{filter:brightness(1.08);}
+    .book{background:#22c55e;color:white;}
+    .book:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-weight:600;font-size:18px;">🏨 酒店列表</div>
+    <nav>
+        <a href="index.html">首页</a>
+        <a href="customerIndex.html">用户主页</a>
+        <a href="reservationList.html">我的预订</a>
+        <a href="collectionList.html">收藏夹</a>
+    </nav>
+</header>
+
+<div class="page">
+    <div class="title">热门酒店推荐</div>
+    <div class="sub">为你精选品质住宿，支持在线预订与收藏</div>
+
+    <div class="grid">
+
+        <!-- 酒店1：杭州西湖民宿 -->
+        <div class="card">
+            <div class="img-box"><img src="杭州西湖.jpg"></div>
+            <div class="info">
+                <div class="name">杭州西湖云舍民宿</div>
+                <div class="meta">杭州市 · 临湖观景 · 休闲推荐</div>
+                <div>
+                    <span class="rate">⭐ 4.7</span> | ￥<span class="price">520 起/晚</span>
+                </div>
+            </div>
+            <div class="btn-area">
+                <button class="btn detail" onclick="location.href='hotelDetail.html'">查看详情</button>
+                <button class="btn book" onclick="location.href='createReservation.html'">立即预订</button>
+            </div>
+        </div>
+
+        <!-- 酒店2：上海外滩 -->
+        <div class="card">
+            <div class="img-box"><img src="上海外滩.jpg"></div>
+            <div class="info">
+                <div class="name">上海外滩星程酒店</div>
+                <div class="meta">外滩 · 黄浦区中心 · 商旅首选</div>
+                <div>
+                    <span class="rate">⭐ 4.6</span> | ￥<span class="price">598 起/晚</span>
+                </div>
+            </div>
+            <div class="btn-area">
+                <button class="btn detail" onclick="location.href='hotelDetail.html'">查看详情</button>
+                <button class="btn book" onclick="location.href='createReservation.html'">立即预订</button>
+            </div>
+        </div>
+
+        <!-- 酒店3：南京紫峰大厦 -->
+        <div class="card">
+            <div class="img-box"><img src="紫峰大厦.jpg"></div>
+            <div class="info">
+                <div class="name">南京紫峰大厦精选酒店</div>
+                <div class="meta">玄武区核心 · 地标视野 · 交通便利</div>
+                <div>
+                    <span class="rate">⭐ 4.8</span> | ￥<span class="price">488 起/晚</span>
+                </div>
+            </div>
+            <div class="btn-area">
+                <button class="btn detail" onclick="location.href='hotelDetail.html'">查看详情</button>
+                <button class="btn book" onclick="location.href='createReservation.html'">立即预订</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

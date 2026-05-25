@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>编辑酒店信息 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .box{
+        width:650px;margin:55px auto;background:white;
+        padding:38px 50px;border-radius:20px;
+        box-shadow:0 6px 20px rgba(0,0,0,.08);
+    }
+
+    .title{font-size:24px;font-weight:700;margin-bottom:8px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
+
+    .field{margin-bottom:18px;}
+    .field label{display:block;margin-bottom:6px;color:#475569;font-size:13px;}
+    .field input,.field textarea{
+        width:100%;padding:10px 14px;border-radius:8px;
+        border:1px solid #d4d4d8;font-size:14px;outline:none;
+    }
+    textarea{resize:none;height:120px;}
+
+    .preview{
+        margin-top:8px;border-radius:10px;overflow:hidden;
+        width:100%;height:240px;border:1px solid #e5e7eb;
+    }
+    .preview img{
+        width:100%;height:100%;object-fit:cover;
+    }
+
+    .btn{
+        width:49%;padding:12px;border-radius:8px;
+        font-size:15px;font-weight:600;border:none;
+        cursor:pointer;margin-top:10px;transition:.2s;
+    }
+    .save{background:#2563eb;color:white;}
+    .save:hover{filter:brightness(1.08);}
+    .back{background:#6b7280;color:white;}
+    .back:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div style="font-size:18px;font-weight:600;">🏨 编辑酒店信息</div>
+    <nav>
+        <a href="manageHotel.html">酒店管理</a>
+        <a href="adminIndex.html">管理员首页</a>
+        <a href="index.html">系统首页</a>
+    </nav>
+</header>
+
+<div class="box">
+
+    <div class="title">修改酒店资料</div>
+    <div class="sub">支持编辑现有酒店的展示信息与基础内容</div>
+
+    <div class="field">
+        <label>酒店名称</label>
+        <input type="text" value="杭州西湖云舍民宿">
+    </div>
+
+    <div class="field">
+        <label>酒店地址</label>
+        <input type="text" value="浙江省杭州市西湖区">
+    </div>
+
+    <div class="field">
+        <label>起始价格 (￥/晚)</label>
+        <input type="number" value="520">
+    </div>
+
+    <div class="field">
+        <label>酒店评分 (0.0 - 5.0)</label>
+        <input type="number" step="0.1" value="4.7">
+    </div>
+
+    <div class="field">
+        <label>酒店展示图片（可重新上传）</label>
+        <input type="file" accept=".jpg,.png,.jpeg">
+        <div class="preview">
+            <img src="杭州西湖.jpg">
+        </div>
+    </div>
+
+    <div class="field">
+        <label>酒店简介</label>
+        <textarea>民宿位于西湖景区近湖畔步道，环境安静适宜度假。</textarea>
+    </div>
+
+    <div class="field">
+        <label>酒店设施标签</label>
+        <input type="text" value="WiFi, 早餐, 景观房, 停车场">
+    </div>
+
+    <button class="btn save" onclick="update()">💾 保存修改</button>
+    <button class="btn back" onclick="location.href='manageHotel.html'">返回</button>
+
+</div>
+
+<script>
+function update(){
+    alert("酒店信息已更新！（演示）");
+    location.href="manageHotel.html";
+}
+</script>
+
+</body>
+</html>
