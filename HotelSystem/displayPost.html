@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>评论详情 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f3f4f9;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#6366f1,#4338ca);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 3px 12px rgba(0,0,0,.2);
+    }
+    header a{color:white;margin-left:18px;text-decoration:none;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:860px;margin:40px auto;padding:0 26px;}
+
+    /* 帖子卡片 */
+    .post{
+        background:white;border-radius:18px;padding:28px;
+        margin-bottom:26px;box-shadow:0 4px 16px rgba(0,0,0,.08);
+    }
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .meta{color:#6b7280;font-size:13px;margin-bottom:12px;}
+    .score{
+        font-size:16px;font-weight:700;color:#fbbf24;
+        margin-bottom:18px;
+    }
+    .content{
+        font-size:15px;color:#374151;line-height:1.9;
+        white-space:pre-line;
+    }
+
+    /* 点赞 */
+    .like{
+        margin-top:20px;font-size:15px;font-weight:700;
+        color:#4338ca;cursor:pointer;user-select:none;
+        display:inline-block;padding:6px 14px;border-radius:8px;
+        transition:.2s;border:2px solid #6366f1;
+    }
+    .like:hover{background:#eef2ff;}
+
+    /* 评论输入 */
+    textarea{
+        width:100%;height:100px;
+        padding:12px;border-radius:10px;
+        border:1px solid #cbd1d9;font-size:14px;
+        margin-top:16px;resize:none;
+    }
+
+    button{
+        margin-top:12px;padding:10px 18px;border:none;
+        background:#4f46e5;color:white;border-radius:8px;
+        cursor:pointer;font-size:14px;font-weight:600;
+        transition:.2s;
+    }
+    button:hover{filter:brightness(1.08);}
+
+    /* 评论区展示 */
+    .comment-card{
+        background:white;border-radius:12px;padding:16px;
+        box-shadow:0 3px 10px rgba(0,0,0,.07);
+        margin-bottom:14px;
+    }
+    .comment-user{font-size:14px;font-weight:700;}
+    .comment-text{
+        font-size:14px;color:#374151;margin-top:6px;
+        white-space:pre-line;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- 帖子主体内容 -->
+    <div class="post">
+        <div class="title">西湖云舍民宿 · 湖景房实住体验分享</div>
+        <div class="meta">发布于 2025-01-15 · 来自用户：小陈</div>
+        <div class="score">评分：★★★★★（4.9）</div>
+
+        <div class="content">
+凌晨到达民宿，老板亲自来接，特别热情！
+房间落地窗直对湖面，早上醒来就能看到阳光洒在水面上，非常治愈。
+
+推荐住高层湖景房，晚上还能看到远处的断桥灯光，氛围感拉满。
+早餐是现磨豆浆+手工包子，简单却很用心，让人印象深刻！
+        </div>
+
+        <div class="btn-group" style="margin-top:16px"><a href="editPost.html" class="btn btn-outline btn-sm">编辑评论</a></div>
+        <div class="like" onclick="like()">👍 点赞 <span id="count">32</span></div>
+    </div>
+
+
+    <!-- 评论输入区 -->
+    <div class="post">
+        <div style="font-size:18px;font-weight:700;margin-bottom:6px;">💬 发布评论</div>
+        <textarea id="commentInput" placeholder="写下你的看法和体验..."></textarea>
+        <button onclick="addComment()">发表</button>
+    </div>
+
+    <!-- 评论展示区 -->
+    <div class="post">
+        <div style="font-size:18px;font-weight:700;margin-bottom:16px;">最新评论</div>
+
+        <div id="comments">
+
+            <div class="comment-card">
+                <div class="comment-user">用户A：</div>
+                <div class="comment-text">上周刚住过，真的舒服！</div>
+            </div>
+
+            <div class="comment-card">
+                <div class="comment-user">用户B：</div>
+                <div class="comment-text">老板热情+1，早餐也不错！</div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+function like(){
+    let c=document.getElementById("count");
+    c.innerHTML=parseInt(c.innerHTML)+1;
+}
+
+function addComment(){
+    let v=document.getElementById("commentInput").value;
+    if(v.trim()===""){alert("评论不能为空");return;}
+
+    let box=document.getElementById("comments");
+    box.innerHTML+=`
+    <div class="comment-card">
+        <div class="comment-user">游客：</div>
+        <div class="comment-text">${v}</div>
+    </div>`;
+    document.getElementById("commentInput").value="";
+}
+</script>
+
+    <script src="js/common.js"></script>
+</body>
+</html>

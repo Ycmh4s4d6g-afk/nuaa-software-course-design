@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>支付记录管理 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#0ea5e9,#0369a1);
+        padding:14px 36px;color:white;display:flex;
+        justify-content:space-between;align-items:center;
+    }
+    header a{color:white;margin-left:16px;text-decoration:none;}
+    table{
+        width:1000px;margin:40px auto;border-collapse:collapse;
+        background:white;border-radius:14px;overflow:hidden;
+        box-shadow:0 4px 16px rgba(0,0,0,.1);
+    }
+    th,td{padding:14px;border-bottom:1px solid #e5e7eb;text-align:center;font-size:14px;}
+    th{background:#e0f2fe;color:#0c4a6e;font-weight:700;}
+    button{
+        padding:6px 12px;border:none;border-radius:6px;font-size:13px;font-weight:600;
+        cursor:pointer;margin:2px;
+    }
+    .view{background:#2563eb;color:white;}
+    .refund{background:#dc2626;color:white;}
+    .view:hover,.refund:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<table id="payTable">
+    <tr><th>支付单号</th><th>用户名</th><th>订单号</th><th>金额</th><th>状态</th><th>操作</th></tr>
+</table>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function load() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/payments?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    var rows = (json.data.records || []).map(function(p) {
+        var refundBtn = p.paymentStatus === 'REFUNDING' ? '<button class="refund" onclick="completeRefund(' + p.id + ')">完成退款</button>' : '';
+        return '<tr><td>' + p.paymentNo + '</td><td>' + (p.username || p.userId) + '</td><td>' + (p.reservationNo || '-') + '</td><td>¥' + p.amount + '</td><td>' + paymentStatusText(p.paymentStatus) + '</td><td>' + refundBtn + '</td></tr>';
+    }).join('');
+    document.getElementById('payTable').innerHTML = '<tr><th>支付单号</th><th>用户名</th><th>订单号</th><th>金额</th><th>状态</th><th>操作</th></tr>' + rows;
+}
+async function completeRefund(id) {
+    if (!confirm('确认完成退款？')) return;
+    var json = await apiPut('/admin/payments/' + id + '/complete-refund', {});
+    if (json.code !== 200) { alert(json.message); return; }
+    load();
+}
+load();
+</script>
+</body>
+</html>

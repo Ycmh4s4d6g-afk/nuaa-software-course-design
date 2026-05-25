@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>审核预订订单 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f7fb;font-family:"Noto Sans SC","Segoe UI";}
+    .card{width:540px;margin:60px auto;background:white;padding:34px;border-radius:16px;box-shadow:0 4px 22px rgba(0,0,0,.1);}
+    h2{text-align:center;margin-bottom:16px;}
+    .field{margin-bottom:12px;font-size:15px;display:flex;justify-content:space-between;}
+    textarea{width:100%;height:80px;margin-top:6px;padding:10px;border-radius:8px;border:1px solid #cbd5e1;box-sizing:border-box;}
+    .btn-area{margin-top:24px;display:flex;gap:14px;}
+    button{flex:1;padding:12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;}
+    .pass{background:#16A34A;color:white;}
+    .deny{background:#DC2626;color:white;}
+</style>
+</head>
+<body>
+<div class="card">
+    <h2>订单审核</h2>
+    <div class="field"><b>用户:</b><span id="vUser">-</span></div>
+    <div class="field"><b>酒店:</b><span id="vHotel">-</span></div>
+    <div class="field"><b>入住:</b><span id="vIn">-</span></div>
+    <div class="field"><b>离店:</b><span id="vOut">-</span></div>
+    <div class="field"><b>金额:</b><span id="vAmount" style="color:#DC2626;font-weight:700;">-</span></div>
+    <div class="field"><b>状态:</b><span id="vStatus">-</span></div>
+    <h3 style="margin-top:20px;">审核操作</h3>
+    <textarea id="denyReason" placeholder="驳回须填写原因"></textarea>
+    <div class="btn-area">
+        <button class="pass" onclick="approve()">审核通过</button>
+        <button class="deny" onclick="deny()">驳回订单</button>
+    </div>
+</div></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+var rid = getQueryParam('id');
+async function load() {
+    if (!requireAdmin() || !rid) return;
+    var json = await apiGetAuth('/admin/reservations/' + rid);
+    if (json.code !== 200) { alert(json.message); return; }
+    var r = json.data;
+    document.getElementById('vUser').textContent = r.username || r.contactName;
+    document.getElementById('vHotel').textContent = r.hotelName;
+    document.getElementById('vIn').textContent = r.checkInDate;
+    document.getElementById('vOut').textContent = r.checkOutDate;
+    document.getElementById('vAmount').textContent = '￥' + r.totalAmount;
+    document.getElementById('vStatus').textContent = reservationStatusText(r.status);
+}
+async function approve() {
+    var json = await apiPut('/admin/reservations/' + rid + '/approve', { auditRemark: document.getElementById('denyReason').value.trim() || '审核通过' });
+    if (json.code !== 200) { alert(json.message); return; }
+    alert('已通过'); location.href = 'manageReservation.html';
+}
+async function deny() {
+    var reason = document.getElementById('denyReason').value.trim();
+    if (!reason) { alert('请填写驳回理由'); return; }
+    var json = await apiPut('/admin/reservations/' + rid + '/reject', { auditRemark: reason });
+    if (json.code !== 200) { alert(json.message); return; }
+    alert('已驳回'); location.href = 'manageReservation.html';
+}
+load();
+</script>
+</body>
+</html>

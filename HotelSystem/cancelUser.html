@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>注销账户 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#fff7f7;font-family:"Segoe UI","Noto Sans SC";}
+    .box{width:500px;margin:80px auto;background:white;border-radius:20px;padding:36px 40px;box-shadow:0 4px 18px rgba(0,0,0,.08);border-top:4px solid #dc2626;}
+    .title{text-align:center;font-size:22px;font-weight:700;color:#dc2626;margin-bottom:6px;}
+    .sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:26px;}
+    .warn{background:#fee2e2;color:#991b1b;font-size:14px;padding:14px;border-radius:10px;border-left:4px solid #dc2626;margin-bottom:22px;}
+    .field{margin-bottom:18px;}
+    .field label{display:block;font-size:13px;margin-bottom:6px;color:#6b7280;}
+    .field input{width:100%;padding:10px;border-radius:8px;border:1px solid #d4d4d8;font-size:14px;box-sizing:border-box;}
+    .btn{width:100%;padding:12px;border-radius:8px;border:none;font-size:15px;font-weight:600;margin-top:6px;cursor:pointer;}
+    .danger{background:#dc2626;color:white;}
+    .cancel{background:#6b7280;color:white;}
+</style>
+</head>
+<body>
+<div class="box">
+    <div class="title">确认注销账户？</div>
+    <p class="sub">注销后账号状态变为 CANCELLED，将无法再登录</p>
+    <div class="warn">注销后该账号无法登录。历史订单等数据仍保留在数据库中（课程设计不做物理删除）。请输入密码确认。</div>
+    <div class="field"><label>输入登录密码以验证身份</label><input type="password" id="pwd"></div>
+    <button class="btn danger" onclick="del()">确认注销账户</button>
+    <button class="btn cancel" onclick="location.href='getUserInfo.html'">取消并返回</button>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function del() {
+    if (!requireLogin()) return;
+    var password = document.getElementById('pwd').value;
+    if (!password) { alert('请输入密码'); return; }
+    if (!confirm('确定注销账号？此操作不可恢复登录。')) return;
+    try {
+        var json = await apiPut('/users/cancel', { password: password });
+        if (json.code !== 200) { alert(json.message || '注销失败'); return; }
+        clearLoginUser();
+        alert('账户已注销');
+        location.href = 'signin.html';
+    } catch (e) { alert('无法连接后端'); }
+}
+</script>
+</body>
+</html>

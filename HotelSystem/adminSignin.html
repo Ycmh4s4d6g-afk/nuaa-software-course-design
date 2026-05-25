@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>管理员登录 - 酒店预订系统后台</title>
+
+<style>
+    body{
+        margin:0;
+        background:#f3f4f6;
+        font-family:"Segoe UI","Noto Sans SC";
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+    }
+
+    .box{
+        width:420px;
+        background:white;
+        padding:36px 40px;
+        border-radius:18px;
+        box-shadow:0 4px 22px rgba(0,0,0,.12);
+    }
+    h2{margin-top:0;text-align:center;font-size:24px;color:#1e3a8a;}
+
+    .switch{
+        display:flex;
+        border-radius:10px;
+        overflow:hidden;
+        margin-bottom:24px;
+        border:1px solid #d1d5db;
+    }
+
+    .switch div{
+        flex:1;padding:10px 0;text-align:center;
+        cursor:pointer;font-weight:600;
+        background:#e5e7eb;color:#374151;
+    }
+    .switch div.active{
+        background:#2563eb;color:white;
+    }
+
+    input{
+        width:100%;padding:12px;border-radius:8px;
+        border:1px solid #cbd5e1;margin-bottom:18px;font-size:15px;
+    }
+
+    button{
+        width:100%;padding:12px;border:none;border-radius:10px;
+        background:#2563eb;color:white;font-size:16px;
+        cursor:pointer;font-weight:600;
+    }
+    button:hover{filter:brightness(1.08);}
+
+    .back{
+        display:block;text-align:center;margin-top:15px;
+        color:#2563eb;font-size:14px;text-decoration:none;
+    }
+    .back:hover{text-decoration:underline;}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>管理员后台登录</h2>
+
+    <!-- 登录方式切换按钮 -->
+    <div class="switch">
+        <div id="btnPwd" class="active" onclick="switchToPwd()">账号密码</div>
+        <div id="btnSMS" onclick="switchToSMS()">验证码登录</div>
+    </div>
+
+    <!-- 账号密码登录 -->
+    <div id="pwdArea">
+        <input type="text" id="adminAccount" placeholder="管理员邮箱 / 手机号">
+        <input type="password" id="adminPwd" placeholder="登录密码">
+        <button onclick="loginPwd()">登录后台</button>
+    </div>
+
+    <!-- 验证码登录 -->
+    <div id="smsArea" style="display:none;">
+        <input type="text" id="adminPhone" placeholder="手机号">
+        <input type="text" id="code" placeholder="验证码">
+        <button onclick="loginSMS()">登录后台</button>
+    </div>
+
+    <a href="index.html" class="back">← 返回系统首页</a>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+function switchToPwd(){
+    smsArea.style.display="none";
+    pwdArea.style.display="block";
+    btnPwd.classList.add("active");
+    btnSMS.classList.remove("active");
+}
+function switchToSMS(){
+    pwdArea.style.display="none";
+    smsArea.style.display="block";
+    btnSMS.classList.add("active");
+    btnPwd.classList.remove("active");
+}
+
+async function loginPwd(){
+    const phone = adminAccount.value.trim();
+    const password = adminPwd.value.trim();
+    if(!phone || !password) return alert("请输入完整信息！");
+    try {
+        const json = await apiPost('/auth/login', { phone, password });
+        if (json.code !== 200) return alert(json.message || '登录失败');
+        if (json.data.role !== 'ADMIN') return alert('该账号不是管理员');
+        saveLoginUser(json.data);
+        alert('登录成功！');
+        location.href = 'adminIndex.html';
+    } catch (e) {
+        alert('无法连接后端，请检查 config.js 中的 API 地址及后端服务是否启动');
+    }
+}
+function loginSMS(){
+    alert('验证码登录暂未接入，请使用账号密码登录');
+}
+</script>
+
+    <script src="js/common.js"></script>
+</body>
+</html>

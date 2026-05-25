@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>评论管理后台 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    header{
+        background:linear-gradient(120deg,#0ea5e9,#0369a1);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:1100px;margin:42px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:28px;}
+
+    .post{
+        background:white;border-radius:14px;padding:20px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);
+        margin-bottom:18px;
+    }
+    .head{
+        display:flex;justify-content:space-between;align-items:center;
+        margin-bottom:6px;
+    }
+    .post-title{font-size:17px;font-weight:700;color:#111;}
+    .status{
+        font-size:13px;font-weight:700;padding:4px 10px;
+        border-radius:6px;display:inline-block;
+    }
+    .approved{
+        background:#dcfce7;color:#16a34a;border:1px solid #16a34a;
+    }
+    .pending{
+        background:#fff7ed;color:#d97706;border:1px solid #f59e0b;
+    }
+
+    .desc{
+        font-size:14px;color:#555;margin-top:6px;margin-bottom:10px;
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+
+    .btns{
+        display:flex;gap:10px;margin-top:6px;
+    }
+    button{
+        padding:6px 14px;border:none;border-radius:6px;
+        font-size:13px;font-weight:600;cursor:pointer;transition:.2s;
+    }
+    .look{background:#0284c7;color:white;}
+    .look:hover{filter:brightness(1.08);}
+    .approve{background:#16a34a;color:white;}
+    .approve:hover{filter:brightness(1.08);}
+    .del{background:#dc2626;color:white;}
+    .del:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="title">评论审核列表</div>
+    <div class="sub">可执行查看 / 审核 / 删除操作</div>
+    <div id="postList"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadPosts() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/posts?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    document.getElementById('postList').innerHTML = (json.data.records || []).map(function(p) {
+        var stCls = p.auditStatus === 'APPROVED' ? 'approved' : 'pending';
+        var stText = postAuditText(p.auditStatus);
+        var auditBtn = p.auditStatus === 'PENDING' ? '<button class="approve" onclick="location.href=\'auditPost.html?id=' + p.id + '\'">前往审核</button>' : '';
+        return '<div class="post"><div class="head"><div class="post-title">' + (p.title || '无标题') + '</div><span class="status ' + stCls + '">' + stText + '</span></div><div class="desc">' + (p.content || '').substring(0,80) + '… · ' + (p.hotelName || '') + ' · ' + (p.username || '') + '</div><div class="btns"><button class="look" onclick="location.href=\'auditPost.html?id=' + p.id + '\'">查看</button>' + auditBtn + '<button class="del" onclick="delPost(' + p.id + ')">删除</button></div></div>';
+    }).join('');
+}
+async function delPost(id) {
+    if (!confirm('确认删除评论？')) return;
+    var json = await apiDelete('/admin/posts/' + id);
+    if (json.code !== 200) { alert(json.message); return; }
+    loadPosts();
+}
+loadPosts();
+</script>
+</body>
+</html>

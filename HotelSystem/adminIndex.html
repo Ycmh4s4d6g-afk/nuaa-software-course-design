@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>管理员后台首页 - 酒店预订系统</title>
+
+<style>
+    body{
+        margin:0;
+        background:#f5f6fa;
+        font-family:"Segoe UI","Noto Sans SC";
+    }
+    header{
+        background:linear-gradient(120deg,#1e40af,#2563eb);
+        padding:18px 40px;
+        color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        font-size:20px;font-weight:600;
+        box-shadow:0 4px 15px rgba(0,0,0,.25);
+    }
+    header a{
+        color:white;font-size:15px;text-decoration:none;margin-left:18px;
+    }
+    header a:hover{opacity:.85;}
+
+    .container{
+        padding:60px 6%;
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:32px;
+    }
+
+    .card{
+        background:white;
+        border-radius:18px;
+        padding:32px 26px;
+        box-shadow:0 4px 22px rgba(0,0,0,.08);
+        text-align:center;
+        cursor:pointer;
+        transition:.25s;
+    }
+    .card:hover{
+        transform:translateY(-6px);
+        box-shadow:0 8px 30px rgba(0,0,0,.15);
+    }
+    .icon{
+        font-size:48px;margin-bottom:12px;
+    }
+    h3{margin:6px 0;font-size:20px;}
+    p{margin-top:6px;color:#6b7280;font-size:14px;line-height:20px;}
+</style>
+</head>
+
+<body data-nav="admin">
+
+<div class="stats" id="statsBar" style="max-width:1150px;margin:30px auto 0;padding:0 26px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;"></div>
+
+<div class="container">
+
+    <div class="card" onclick="location.href='manageUser.html'">
+        <div class="icon">👤</div>
+        <h3>用户管理</h3>
+        <p>查看用户账号、修改资料、删除异常用户</p>
+    </div>
+
+    <div class="card" onclick="location.href='manageHotel.html'">
+        <div class="icon">🏩</div>
+        <h3>酒店管理</h3>
+        <p>新增酒店、信息修改、下架与维护</p>
+    </div>
+
+    <div class="card" onclick="location.href='manageReservation.html'">
+        <div class="icon">📑</div>
+        <h3>订单/预订管理</h3>
+        <p>审核预订、查看订单记录、操作订单状态</p>
+    </div>
+
+    <div class="card" onclick="location.href='managePost.html'">
+        <div class="icon">📝</div>
+        <h3>评论审核</h3>
+        <p>管理酒店评价、删除违规评论、审核贴文</p>
+    </div>
+
+    <div class="card" onclick="location.href='managePayment.html'">
+        <div class="icon">💰</div>
+        <h3>支付记录</h3>
+        <p>查看用户订单支付流水、退款审核</p>
+    </div>
+
+    
+    <div class="card" onclick="location.href='manageCollection.html'">
+        <div class="icon">⭐</div>
+        <h3>收藏管理</h3>
+        <p>查看用户收藏记录、清理异常数据</p>
+    </div>
+
+    <div class="card" onclick="location.href='manageNotification.html'">
+        <div class="icon">🔔</div>
+        <h3>通知中心</h3>
+        <p>系统告知、退款提醒、审核处理消息</p>
+    </div>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadStats() {
+    if (!requireAdmin()) return;
+    try {
+        var json = await apiGetAuth('/admin/stats');
+        if (json.code !== 200) return;
+        var s = json.data;
+        document.getElementById('statsBar').innerHTML =
+            statCard('用户数', s.userCount) +
+            statCard('酒店数', s.hotelCount) +
+            statCard('订单数', s.reservationCount) +
+            statCard('已支付总额', '¥' + (s.paidAmountTotal || 0)) +
+            statCard('待审评论', s.pendingPostCount) +
+            statCard('待审订单', s.pendingReservationCount) +
+            statCard('收藏数', s.collectionCount) +
+            statCard('支付记录', s.paymentCount);
+    } catch (e) {}
+}
+function statCard(label, val) {
+    return '<div style="background:white;padding:18px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);text-align:center;"><div style="font-size:22px;font-weight:700;color:#1e40af;">' + val + '</div><div style="font-size:13px;color:#64748b;margin-top:6px;">' + label + '</div></div>';
+}
+loadStats();
+</script>
+</body>
+</html>

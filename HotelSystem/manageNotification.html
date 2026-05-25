@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>通知管理后台 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#2563eb,#1e40af);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 4px 14px rgba(0,0,0,.22);
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:1000px;margin:42px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#64748b;margin-bottom:26px;}
+
+    table{
+        width:100%;background:white;border-collapse:collapse;
+        box-shadow:0 4px 18px rgba(0,0,0,.08);
+        border-radius:16px;overflow:hidden;
+    }
+    th,td{
+        padding:14px;text-align:center;font-size:14px;
+        border-bottom:1px solid #e5e7eb;
+    }
+    th{
+        background:#eff6ff;color:#1e3a8a;font-weight:700;
+    }
+
+    .read{opacity:.55;}
+
+    button{
+        padding:6px 14px;border:none;border-radius:6px;
+        font-size:13px;font-weight:600;cursor:pointer;margin:2px;
+        transition:.2s;
+    }
+    .look{background:#2563eb;color:white;}
+    .look:hover{filter:brightness(1.08);}
+    .mark{background:#22c55e;color:white;}
+    .mark:hover{filter:brightness(1.08);}
+    .del{background:#dc2626;color:white;}
+    .del:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="title">通知记录列表</div>
+    <div class="sub">对平台全部通知进行查看、标记、删除管理</div>
+
+    <table id="notifyTable">
+        <tr><th>用户名</th><th>标题</th><th>内容</th><th>时间</th><th>状态</th></tr>
+    </table>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function load() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/notifications?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    var rows = (json.data.records || []).map(function(n) {
+        return '<tr class="' + (n.status === 'READ' ? 'read' : '') + '"><td>' + (n.username || n.userId) + '</td><td>' + n.title + '</td><td>' + (n.content || '').substring(0,40) + '</td><td>' + formatDateTime(n.createTime) + '</td><td>' + (n.status === 'READ' ? '已读' : '未读') + '</td></tr>';
+    }).join('');
+    document.getElementById('notifyTable').innerHTML = '<tr><th>用户名</th><th>标题</th><th>内容</th><th>时间</th><th>状态</th></tr>' + rows;
+}
+load();
+</script>
+</body>
+</html>

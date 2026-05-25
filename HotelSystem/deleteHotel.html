@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>删除酒店 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f5f7fb;font-family:"Segoe UI","Noto Sans SC";}
+    .box{width:500px;margin:60px auto;background:white;padding:36px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.1);text-align:center;}
+    select{width:100%;padding:10px;border-radius:8px;border:1px solid #cbd5e1;margin-bottom:26px;}
+    button{width:100%;padding:12px;border:none;border-radius:8px;color:white;font-weight:600;cursor:pointer;background:#b91c1c;}
+</style>
+</head>
+<body>
+<div class="box">
+    <h2>下架酒店</h2>
+    <p style="color:#64748b;font-size:14px;">将酒店设为不可预订（软删除，保留历史数据）</p>
+    <select id="hotel"></select>
+    <button onclick="removeHotel()">确认下架</button>
+    <p style="margin-top:16px;"><a href="manageHotel.html">返回</a></p>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadHotels() {
+    if (!requireAdmin()) return;
+    var pre = getQueryParam('id');
+    var json = await apiGetAuth('/admin/hotels?page=1&size=50');
+    if (json.code !== 200) return;
+    var sel = document.getElementById('hotel');
+    sel.innerHTML = (json.data.records || []).map(function(h) {
+        return '<option value="' + h.id + '"' + (pre == h.id ? ' selected' : '') + '>' + h.hotelName + '</option>';
+    }).join('');
+}
+async function removeHotel() {
+    var id = document.getElementById('hotel').value;
+    if (!confirm('确认下架该酒店？')) return;
+    var json = await apiDelete('/admin/hotels/' + id);
+    if (json.code !== 200) { alert(json.message || '失败'); return; }
+    alert('已下架'); location.href = 'manageHotel.html';
+}
+loadHotels();
+</script>
+</body>
+</html>

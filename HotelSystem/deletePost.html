@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>删除评论 - 管理后台</title>
+<style>
+    body { background: #fff !important; }
+    .box {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        padding: 36px 40px;
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        border-top: 5px solid var(--danger);
+    }
+    .title { text-align: center; font-size: 22px; font-weight: 700; color: var(--danger); margin-bottom: 8px; }
+    .post-preview { background: #f8fafc; border-radius: 10px; padding: 16px; margin-bottom: 20px; font-size: 14px; line-height: 1.7; }
+</style>
+</head>
+<body data-nav="admin" data-page-title="删除评论">
+
+<div class="page page-form">
+    <div class="box">
+        <div class="title">确认删除该评论？</div>
+        <div class="sub">删除后评论将从系统中永久移除，无法恢复</div>
+        <div class="alert alert-danger">你正在删除用户发布的酒店评价内容，删除后用户将无法继续查看。</div>
+        <div class="post-preview">
+            <strong>评论标题：</strong>上海外滩酒店环境不错但偏贵<br>
+            <strong>发布用户：</strong>用户_20250201<br>
+            <strong>关联酒店：</strong>上海外滩星程酒店<br>
+            <strong>评分：</strong>★ 4.6
+        </div>
+        <div class="field">
+            <label>为确认删除，请输入关键词「外滩」</label>
+            <input type="text" id="check" placeholder="请输入：外滩">
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-danger" onclick="delPost()">确认删除</button>
+            <button class="btn btn-secondary" onclick="location.href='managePost.html'">取消并返回</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function delPost() {
+    if (document.getElementById('check').value.trim() !== '外滩') {
+        alert('确认文字输入不一致，删除终止！');
+        return;
+    }
+    alert('评论已成功删除！（演示）');
+    location.href = 'managePost.html';
+}
+</script>
+<script src="js/common.js"></script>
+</body>
+</html>

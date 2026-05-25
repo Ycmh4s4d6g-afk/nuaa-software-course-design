@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>创建预订订单 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    .page{max-width:900px;margin:38px auto;padding:0 26px;}
+    .card{background:white;border-radius:18px;padding:26px;box-shadow:0 4px 16px rgba(0,0,0,.08);margin-bottom:24px;}
+    .title{font-size:22px;font-weight:700;margin-bottom:10px;}
+    .hotel-bar{display:flex;gap:20px;align-items:center;}
+    .hotel-img{width:230px;height:160px;border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.12);}
+    .hotel-img img{width:100%;height:100%;object-fit:cover;}
+    .hotel-info{flex:1;}
+    .hotel-name{font-size:20px;font-weight:700;margin-bottom:4px;}
+    .hotel-meta{font-size:13px;color:#64748b;margin-bottom:8px;}
+    .price{font-size:18px;color:#2563eb;font-weight:700;}
+    .field{margin-top:16px;}
+    .field label{display:block;font-size:14px;margin-bottom:6px;}
+    .field input,.field select,.field textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #d4d4d8;font-size:15px;box-sizing:border-box;}
+    .total-box{background:#eef6ff;border-left:6px solid #3b82f6;padding:16px;border-radius:10px;margin-top:20px;font-size:17px;font-weight:700;color:#1d4ed8;}
+    .btn-area{margin-top:26px;display:flex;gap:16px;}
+    button{flex:1;padding:12px;border-radius:8px;border:none;cursor:pointer;font-size:16px;font-weight:600;}
+    .submit{background:#22c55e;color:white;}
+    .back{background:#6b7280;color:white;}
+</style>
+</head>
+<body>
+<div class="page">
+    <div class="card">
+        <div class="title">🏨 酒店信息确认</div>
+        <div class="hotel-bar">
+            <div class="hotel-img"><img id="hotelImg" src="杭州西湖.jpg" alt="酒店"></div>
+            <div class="hotel-info">
+                <div class="hotel-name" id="hotelName">加载中...</div>
+                <div class="hotel-meta" id="hotelMeta"></div>
+                <div class="price" id="roomPrice">请选择房型</div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>房型</label>
+            <select id="roomTypeId" onchange="onRoomChange()"><option value="">加载中...</option></select>
+        </div>
+
+        <div class="field">
+            <label>入住日期</label>
+            <input type="date" id="inDate" onchange="calc()">
+        </div>
+        <div class="field">
+            <label>离店日期</label>
+            <input type="date" id="outDate" onchange="calc()">
+        </div>
+        <div class="field">
+            <label>房间数</label>
+            <select id="roomCount" onchange="calc()">
+                <option value="1">1 间</option>
+                <option value="2">2 间</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>入住人数</label>
+            <select id="guestCount">
+                <option value="1">1 位</option>
+                <option value="2" selected>2 位</option>
+                <option value="3">3 位</option>
+                <option value="4">4 位</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>联系人姓名</label>
+            <input type="text" id="contactName" placeholder="请输入联系人姓名">
+        </div>
+        <div class="field">
+            <label>联系人手机号</label>
+            <input type="text" id="contactPhone" placeholder="请输入手机号">
+        </div>
+        <div class="field">
+            <label>备注（可选）</label>
+            <textarea id="remark" rows="2" placeholder="如：靠窗、晚到等"></textarea>
+        </div>
+
+        <div class="total-box" id="totalPrice">请选择日期以计算费用</div>
+        <div class="btn-area">
+            <button class="submit" onclick="submitOrder()">提交预订</button>
+            <button class="back" onclick="history.back()">返回</button>
+        </div>
+    </div>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+var hotelId = getQueryParam('hotelId') || '1';
+var roomTypeIdParam = getQueryParam('roomTypeId');
+var roomTypes = [];
+var pricePerNight = 0;
+var maxRoomCount = 0;
+
+function getSelectedRoomType() {
+    var id = document.getElementById('roomTypeId').value;
+    for (var i = 0; i < roomTypes.length; i++) {
+        if (String(roomTypes[i].id) === String(id)) return roomTypes[i];
+    }
+    return null;
+}
+
+function rebuildRoomCountOptions() {
+    var rt = getSelectedRoomType();
+    var sel = document.getElementById('roomCount');
+    if (!rt) {
+        sel.innerHTML = '<option value="1">1 间</option>';
+        maxRoomCount = 0;
+        return;
+    }
+    maxRoomCount = rt.availableRooms != null ? rt.availableRooms : 0;
+    if (maxRoomCount <= 0) {
+        sel.innerHTML = '<option value="">无余量</option>';
+        document.getElementById('totalPrice').textContent = '⚠ 该房型已无空房，请更换房型';
+        return;
+    }
+    var html = '';
+    for (var n = 1; n <= maxRoomCount && n <= 10; n++) {
+        html += '<option value="' + n + '">' + n + ' 间</option>';
+    }
+    sel.innerHTML = html;
+}
+
+function onRoomChange() {
+    var rt = getSelectedRoomType();
+    if (rt) {
+        pricePerNight = Number(rt.price);
+        var stock = rt.availableRooms != null ? rt.availableRooms : 0;
+        document.getElementById('roomPrice').textContent =
+            '￥' + rt.price + ' / 晚 · ' + rt.roomTypeName + ' · 剩余可订 ' + stock + ' 间';
+    }
+    rebuildRoomCountOptions();
+    calc();
+}
+
+function calc() {
+    var roomCount = parseInt(document.getElementById('roomCount').value, 10) || 1;
+    var inVal = document.getElementById('inDate').value;
+    var outVal = document.getElementById('outDate').value;
+    if (!inVal || !outVal || !pricePerNight) return;
+    var nights = Math.ceil((new Date(outVal) - new Date(inVal)) / 86400000);
+    if (nights <= 0) {
+        document.getElementById('totalPrice').textContent = '⚠ 离店日期需大于入住日期';
+        return;
+    }
+    document.getElementById('totalPrice').textContent = '预计消费：¥ ' + (nights * pricePerNight * roomCount) + '（共 ' + nights + ' 晚 × ' + roomCount + ' 间）';
+}
+
+async function loadPage() {
+    if (!requireLogin()) return;
+
+    var name = localStorage.getItem('username');
+    var phone = localStorage.getItem('phone');
+    if (name) document.getElementById('contactName').value = name;
+    if (phone) document.getElementById('contactPhone').value = phone;
+
+    try {
+        var detailJson = await apiGet('/hotels/' + hotelId);
+        if (detailJson.code !== 200) {
+            alert(detailJson.message || '酒店加载失败');
+            return;
+        }
+        var h = detailJson.data;
+        document.getElementById('hotelImg').src = hotelImage(h.id);
+        document.getElementById('hotelName').textContent = h.hotelName;
+        document.getElementById('hotelMeta').textContent = h.city + ' · ' + h.hotelType + ' · ⭐ ' + h.rating;
+
+        var roomJson = await apiGet('/hotels/' + hotelId + '/room-types');
+        if (roomJson.code !== 200 || !roomJson.data.length) {
+            alert('该酒店暂无可用房型');
+            return;
+        }
+        roomTypes = roomJson.data.filter(function(r) {
+            return (r.availableRooms == null ? 0 : r.availableRooms) > 0;
+        });
+        if (!roomTypes.length) {
+            alert('该酒店房型已满房');
+            return;
+        }
+        var sel = document.getElementById('roomTypeId');
+        sel.innerHTML = roomTypes.map(function(r) {
+            return '<option value="' + r.id + '">' + r.roomTypeName + ' - ￥' + r.price + '/晚（余' + r.availableRooms + '间）</option>';
+        }).join('');
+        if (roomTypeIdParam) sel.value = roomTypeIdParam;
+        onRoomChange();
+    } catch (e) {
+        alert('无法连接后端，请确认 Spring Boot 已启动');
+    }
+}
+
+async function submitOrder() {
+    if (!requireLogin()) return;
+
+    var roomTypeId = document.getElementById('roomTypeId').value;
+    var checkInDate = document.getElementById('inDate').value;
+    var checkOutDate = document.getElementById('outDate').value;
+    var contactName = document.getElementById('contactName').value.trim();
+    var contactPhone = document.getElementById('contactPhone').value.trim();
+    var remark = document.getElementById('remark').value.trim();
+
+    if (!roomTypeId || !checkInDate || !checkOutDate) {
+        alert('请完整填写房型与日期');
+        return;
+    }
+    if (!contactName || !contactPhone) {
+        alert('请填写联系人信息');
+        return;
+    }
+    var roomCount = parseInt(document.getElementById('roomCount').value, 10);
+    if (!roomCount || roomCount > maxRoomCount) {
+        alert('预订间数超过剩余可订房间（当前最多 ' + maxRoomCount + ' 间）');
+        return;
+    }
+
+    try {
+        var json = await apiPost('/reservations', {
+            hotelId: Number(hotelId),
+            roomTypeId: Number(roomTypeId),
+            checkInDate: checkInDate,
+            checkOutDate: checkOutDate,
+            roomCount: parseInt(document.getElementById('roomCount').value, 10),
+            guestCount: parseInt(document.getElementById('guestCount').value, 10),
+            contactName: contactName,
+            contactPhone: contactPhone,
+            remark: remark || null
+        });
+        if (json.code !== 200) {
+            alert(json.message || '预订失败');
+            return;
+        }
+        alert('预订成功！订单号：' + json.data.reservationNo);
+        location.href = 'createPayment.html?reservationId=' + json.data.id;
+    } catch (e) {
+        alert('无法连接后端，请确认 Spring Boot 已启动');
+    }
+}
+
+loadPage();
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>收藏管理后台 - 酒店预订系统</title>
+
+<style>
+    body{margin:0;background:#f5f6fb;font-family:"Segoe UI","Noto Sans SC";}
+
+    header{
+        background:linear-gradient(120deg,#0ea5e9,#0369a1);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+        box-shadow:0 3px 12px rgba(0,0,0,.2);
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    .page{max-width:1100px;margin:42px auto;padding:0 26px;}
+    .title{font-size:24px;font-weight:700;margin-bottom:6px;}
+    .sub{font-size:13px;color:#6b7280;margin-bottom:26px;}
+
+    /* 表格样式 */
+    table{
+        width:100%;border-collapse:collapse;background:white;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);
+        border-radius:12px;overflow:hidden;
+    }
+    th,td{
+        padding:14px;font-size:14px;
+        border-bottom:1px solid #e5e7eb;text-align:center;
+    }
+    th{
+        background:#f1f5f9;font-weight:700;color:#334155;
+    }
+
+    button{
+        padding:6px 14px;border:none;border-radius:6px;
+        font-size:13px;font-weight:600;cursor:pointer;margin:2px;
+        transition:.2s;
+    }
+    .look{background:#0284c7;color:white;}
+    .look:hover{filter:brightness(1.08);}
+    .del{background:#dc2626;color:white;}
+    .del:hover{filter:brightness(1.08);}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="title">用户收藏酒店列表</div>
+    <div class="sub">管理员可查看与删除收藏记录</div>
+
+    <table id="table">
+        <tr><th>用户名</th><th>收藏酒店</th><th>城市</th><th>最低价</th><th>操作</th></tr>
+    </table>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function load() {
+    if (!requireAdmin()) return;
+    var json = await apiGetAuth('/admin/collections?page=1&size=50');
+    if (json.code !== 200) { alert(json.message); return; }
+    var rows = (json.data.records || []).map(function(c) {
+        var h = c.hotel || {};
+        return '<tr><td>' + (c.username || c.userId) + '</td><td>' + (h.hotelName || '-') + '</td><td>' + (h.city || '-') + '</td><td>￥' + (h.minPrice || '-') + '</td><td><button class="look" onclick="location.href=\'hotelDetail.html?id=' + c.hotelId + '\'">查看酒店</button><button class="del" onclick="removeRow(' + c.id + ')">删除</button></td></tr>';
+    }).join('');
+    document.getElementById('table').innerHTML = '<tr><th>用户名</th><th>收藏酒店</th><th>城市</th><th>最低价</th><th>操作</th></tr>' + rows;
+}
+async function removeRow(id) {
+    if (!confirm('确认删除收藏记录？')) return;
+    var json = await apiDelete('/admin/collections/' + id);
+    if (json.code !== 200) { alert(json.message); return; }
+    load();
+}
+load();
+</script>
+</body>
+</html>

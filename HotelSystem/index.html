@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+    <title>酒店推荐预订系统</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+            background: #f4f6fb;
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* 顶部导航 */
+        header {
+            background: linear-gradient(120deg, #3b82f6, #2563eb);
+            color: #fff;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            font-size: 26px;
+        }
+        nav {
+            display: flex;
+            gap: 18px;
+            font-size: 15px;
+        }
+        nav a {
+            padding: 6px 10px;
+            border-radius: 999px;
+            color: #e5edff;
+        }
+        nav a:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+        .nav-auth {
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* 页面主体 */
+        .page {
+            max-width: 1180px;
+            margin: 26px auto 40px;
+            padding: 0 16px;
+        }
+
+        /* 顶部横幅 + 搜索区域 */
+        .hero {
+            background: #ffffff;
+            padding: 24px 28px 20px;
+            border-radius: 18px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 18px;
+        }
+        .hero-left-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .hero-left-sub {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 14px;
+        }
+        .search-form {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 2.2fr 1.5fr 1.5fr 1.5fr 1.2fr;
+            gap: 10px;
+            align-items: end;
+        }
+        .field label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .field input, .field select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid #d4d4d8;
+            font-size: 13px;
+            outline: none;
+        }
+        .field input:focus, .field select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px rgba(37,99,235,0.25);
+        }
+        .search-btn {
+            padding: 10px 12px;
+            border-radius: 999px;
+            border: none;
+            background: linear-gradient(120deg,#2563eb,#1d4ed8);
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(37,99,235,0.4);
+        }
+        .search-btn:hover {
+            filter: brightness(1.03);
+        }
+        .hero-right {
+            border-left: 1px dashed #e5e7eb;
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+        .hero-stat {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .hero-stat strong {
+            font-size: 16px;
+            color: #111827;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .hero-tag {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .hero-tag:hover {
+            background: #dbeafe;
+        }
+        .section-more {
+            font-size: 13px;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .section-more:hover {
+            text-decoration: underline;
+        }
+
+        /* 推荐酒店区 */
+        .section-title {
+            margin-top: 24px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .section-title h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .section-title span {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .hotel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+        .hotel-card {
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(15,23,42,0.06);
+            display: flex;
+            flex-direction: column;
+        }
+        .hotel-image {
+            background: #e5e7eb;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+        .hotel-body {
+            padding: 10px 14px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+        .hotel-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .hotel-meta {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .hotel-bottom {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        .hotel-price {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        .hotel-btn {
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid #2563eb;
+            color: #2563eb;
+            background: #eff6ff;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .hotel-btn:hover {
+            background:#2563eb;
+            color:#fff;
+        }
+
+        /* 快捷入口 */
+        .quick-grid {
+            margin-top: 26px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+        .quick-card {
+            background: #ffffff;
+            padding: 14px 14px 16px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(148,163,184,0.25);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
+        }
+        .quick-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .quick-card-desc {
+            color: #6b7280;
+        }
+        .quick-card-footer {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: linear-gradient(120deg, #2563eb, #1d4ed8);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            align-self: flex-start;
+            transition: filter 0.2s;
+        }
+        .quick-card:hover .quick-card-footer {
+            filter: brightness(1.06);
+        }
+
+        /* 页脚 */
+        footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+            padding-bottom: 18px;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .hero-right {
+                border-left: none;
+                border-top:1px dashed #e5e7eb;
+                padding-left: 0;
+                padding-top: 12px;
+                margin-top: 6px;
+            }
+            .hotel-grid {
+                grid-template-columns: repeat(2,minmax(0,1fr));
+            }
+            .quick-grid {
+                grid-template-columns: repeat(2,minmax(0,1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                padding: 12px 16px;
+            }
+            nav {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .search-form {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hotel-grid {
+                grid-template-columns: 1fr;
+            }
+            .quick-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+    <!-- 顶部搜索 + 简要介绍 -->
+    <section class="hero">
+        <div>
+            <div class="hero-left-title">发现下一间合适的房间，从这里开始。</div>
+            <div class="hero-left-sub">
+                支持酒店查询、个性化推荐、在线预订、支付与评价，一站式完成你的入住流程。
+            </div>
+
+            <!-- 搜索表单：提交到酒店列表页 -->
+            <form class="search-form" action="hotelList.html" method="get">
+                <div class="field">
+                    <label>目的地</label>
+                    <input type="text" name="city" placeholder="如：南京 / 上海 / 北京">
+                </div>
+                <div class="field">
+                    <label>入住日期</label>
+                    <input type="date" name="checkIn">
+                </div>
+                <div class="field">
+                    <label>离店日期</label>
+                    <input type="date" name="checkOut">
+                </div>
+                <div class="field">
+                    <label>价格上限（元）</label>
+                    <input type="number" name="maxPrice" placeholder="500">
+                </div>
+                <div class="field">
+                    <button type="submit" class="search-btn">搜索酒店</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="hero-right">
+            <div class="hero-stat">
+                支持<strong>在线预订</strong>、<strong>安全支付</strong>与<strong>订单管理</strong>，入住流程一站完成。
+            </div>
+            <div class="hero-stat">
+                热门目的地：
+                <div class="hero-tags">
+                    <a class="hero-tag" href="hotelList.html?city=上海">上海</a>
+                    <a class="hero-tag" href="hotelList.html?city=北京">北京</a>
+                    <a class="hero-tag" href="hotelList.html?city=南京">南京</a>
+                    <a class="hero-tag" href="hotelList.html?city=杭州">杭州</a>
+                </div>
+            </div>
+            <div class="hero-stat">
+                智能推荐结合您的浏览、收藏与评分偏好，为您精选合适酒店。
+            </div>
+        </div>
+    </section>
+
+    <!-- 推荐酒店卡片 -->
+    <div class="section-title">
+        <h2>为你推荐</h2>
+        <span>根据您的偏好与热门趋势，为您精选优质酒店</span>
+    </div>
+
+    <section class="hotel-grid" id="recommendGrid"></section>
+
+    <!-- 快捷入口模块 -->
+    <div class="section-title">
+        <h2>快捷入口</h2>
+        <span>常用功能一键直达</span>
+    </div>
+
+    <section class="quick-grid">
+        <a class="quick-card" href="hotelList.html">
+            <div class="quick-card-title">查找酒店</div>
+            <div class="quick-card-desc">
+                浏览各城市优质酒店，按条件筛选并查看房型详情。
+            </div>
+            <span class="quick-card-footer">查看酒店</span>
+        </a>
+
+        <a class="quick-card" href="signin.html">
+            <div class="quick-card-title">账户中心</div>
+            <div class="quick-card-desc">
+                登录或注册账户，管理个人信息、密码与安全设置。
+            </div>
+            <span class="quick-card-footer">立即登录</span>
+        </a>
+
+        <a class="quick-card" href="reservationList.html">
+            <div class="quick-card-title">我的预订</div>
+            <div class="quick-card-desc">
+                查看当前与历史订单，支持修改、取消与在线支付。
+            </div>
+            <span class="quick-card-footer">我的预订</span>
+        </a>
+
+        <a class="quick-card" href="collectionList.html">
+            <div class="quick-card-title">我的收藏</div>
+            <div class="quick-card-desc">
+                管理收藏的酒店，快速查看详情并完成预订。
+            </div>
+            <span class="quick-card-footer">我的收藏</span>
+        </a>
+
+        <a class="quick-card" href="listPost.html">
+            <div class="quick-card-title">酒店评价</div>
+            <div class="quick-card-desc">
+                浏览真实住客评价，分享您的入住体验。
+            </div>
+            <span class="quick-card-footer">查看评论</span>
+        </a>
+    </section>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadRecommend() {
+    try {
+        var json = await apiGet('/hotels/recommended?sortBy=rating&limit=3');
+        if (json.code !== 200) return;
+        document.getElementById('recommendGrid').innerHTML = (json.data || []).map(function(h) {
+            return '<div class="hotel-card"><div class="hotel-image"><img src="' + hotelImage(h.id) + '" style="width:100%;height:100%;object-fit:cover;"></div><div class="hotel-body"><div class="hotel-name">' + h.hotelName + '</div><div class="hotel-meta">' + h.city + ' · ' + h.hotelType + ' · 收藏' + (h.collectionCount || 0) + '</div><div class="hotel-bottom"><div><span style="color:#f97316;">⭐ ' + h.rating + '</span></div><div class="hotel-price">¥ ' + h.minPrice + ' 起</div></div><div class="hotel-bottom"><button class="hotel-btn" onclick="location.href=\'hotelDetail.html?id=' + h.id + '\'">查看详情</button><button class="hotel-btn" onclick="location.href=\'createReservation.html?hotelId=' + h.id + '\'">立即预订</button></div></div></div>';
+        }).join('');
+    } catch (e) {}
+}
+loadRecommend();
+</script>
+</body>
+</html>

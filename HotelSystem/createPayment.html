@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>支付订单 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f5f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    .box{width:520px;margin:50px auto;background:white;padding:36px;border-radius:18px;box-shadow:0 4px 18px rgba(0,0,0,.1);}
+    h2{text-align:center;margin-top:0;margin-bottom:10px;}
+    .sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:26px;}
+    .row{margin-bottom:18px;font-size:15px;color:#374151;}
+    .row span{float:right;color:#2563eb;font-weight:bold;}
+    button{width:100%;margin-top:20px;padding:12px;background:#059669;border:none;border-radius:10px;color:white;font-size:16px;font-weight:bold;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="box">
+    <h2>确认订单并支付</h2>
+    <p class="sub">完成支付后订单才会正式生效</p>
+    <div class="row">酒店名称 <span id="hotelName">-</span></div>
+    <div class="row">入住日期 <span id="checkIn">-</span></div>
+    <div class="row">离店日期 <span id="checkOut">-</span></div>
+    <div class="row" style="font-size:17px;font-weight:600;">订单金额 <span id="amount" style="color:#dc2626;">-</span></div>
+    <button id="payBtn" onclick="pay()">立即支付（模拟）</button>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+var reservationId = getQueryParam('reservationId');
+var paymentId = null;
+
+async function loadPage() {
+    if (!requireLogin()) return;
+    if (!reservationId) { alert('缺少订单ID'); location.href = 'reservationList.html'; return; }
+    try {
+        var resJson = await apiGetAuth('/reservations/' + reservationId);
+        if (resJson.code !== 200) { alert(resJson.message || '订单不存在'); return; }
+        var r = resJson.data;
+        document.getElementById('hotelName').textContent = r.hotelName;
+        document.getElementById('checkIn').textContent = r.checkInDate;
+        document.getElementById('checkOut').textContent = r.checkOutDate;
+        document.getElementById('amount').textContent = '￥' + r.totalAmount;
+        if (r.status !== 'PENDING_PAYMENT') {
+            document.getElementById('payBtn').textContent = '订单状态：' + reservationStatusText(r.status);
+            document.getElementById('payBtn').disabled = true;
+            return;
+        }
+        var payJson = await apiPost('/payments', { reservationId: Number(reservationId), paymentMethod: 'SIMULATED' });
+        if (payJson.code === 400 && payJson.message && payJson.message.indexOf('待支付') >= 0) {
+            var exist = await apiGetAuth('/payments/reservation/' + reservationId);
+            if (exist.code === 200) paymentId = exist.data.id;
+        } else if (payJson.code === 200) {
+            paymentId = payJson.data.id;
+        } else if (payJson.code !== 200) {
+            alert(payJson.message || '创建支付失败');
+        }
+    } catch (e) { alert('无法连接后端'); }
+}
+
+async function pay() {
+    if (!paymentId) { alert('支付记录未就绪'); return; }
+    try {
+        var json = await apiPut('/payments/' + paymentId + '/pay');
+        if (json.code !== 200) { alert(json.message || '支付失败'); return; }
+        location.href = 'paymentResult.html?reservationId=' + reservationId + '&amount=' + encodeURIComponent(json.data.amount);
+    } catch (e) { alert('无法连接后端'); }
+}
+
+loadPage();
+</script>
+</body>
+</html>

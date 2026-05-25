@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>订单详情 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI","Noto Sans SC";}
+    .page{max-width:900px;margin:40px auto;padding:0 26px;}
+    .card{background:white;border-radius:18px;padding:26px;box-shadow:0 4px 16px rgba(0,0,0,.08);margin-bottom:26px;}
+    .section-title{font-size:18px;font-weight:700;margin-bottom:12px;}
+    .hotel-box{display:flex;gap:20px;}
+    .hotel-img{width:240px;height:170px;border-radius:14px;overflow:hidden;}
+    .hotel-img img{width:100%;height:100%;object-fit:cover;}
+    table{width:100%;border-collapse:collapse;margin-top:12px;}
+    td{padding:10px;border-bottom:1px solid #e5e7eb;font-size:14px;}
+    td.key{width:140px;color:#6b7280;}
+    .status{font-size:15px;font-weight:700;margin-top:6px;}
+    .btn-area{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;}
+    button{padding:12px 16px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;color:white;}
+    .pay{background:#059669;}
+    .edit{background:#2563eb;}
+    .cancel{background:#dc2626;}
+    .back{background:#6b7280;}
+</style>
+</head>
+<body>
+<div class="page">
+    <div class="card">
+        <div class="section-title">🏨 酒店信息</div>
+        <div class="hotel-box">
+            <div class="hotel-img"><img id="hotelImg" src="杭州西湖.jpg" alt=""></div>
+            <div>
+                <div id="hotelName" style="font-size:20px;font-weight:700;">加载中...</div>
+                <div id="roomType" style="font-size:13px;color:#64748b;margin-top:8px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="section-title">📅 订单详情</div>
+        <table id="infoTable"></table>
+        <div class="status" id="statusText"></div>
+        <div class="btn-area" id="actions"></div></div>
+    </div>
+</div></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+var orderId = getQueryParam('id');
+
+async function loadDetail() {
+    if (!requireLogin()) return;
+    if (!orderId) { alert('缺少订单ID'); return; }
+    var json = await apiGetAuth('/reservations/' + orderId);
+    if (json.code !== 200) { alert(json.message || '加载失败'); return; }
+    var r = json.data;
+    document.getElementById('hotelImg').src = hotelImage(r.hotelId);
+    document.getElementById('hotelName').textContent = r.hotelName;
+    document.getElementById('roomType').textContent = r.roomTypeName + ' · ' + r.roomCount + '间 · ' + r.guestCount + '人';
+    document.getElementById('infoTable').innerHTML =
+        '<tr><td class="key">订单编号</td><td>' + r.reservationNo + '</td></tr>' +
+        '<tr><td class="key">入住日期</td><td>' + r.checkInDate + '</td></tr>' +
+        '<tr><td class="key">离店日期</td><td>' + r.checkOutDate + '</td></tr>' +
+        '<tr><td class="key">联系人</td><td>' + r.contactName + ' / ' + r.contactPhone + '</td></tr>' +
+        '<tr><td class="key">订单金额</td><td>¥' + r.totalAmount + '</td></tr>';
+    document.getElementById('statusText').textContent = '状态：' + reservationStatusText(r.status);
+    document.getElementById('statusText').style.color = reservationStatusColor(r.status);
+    var actions = document.getElementById('actions');
+    var html = '<button class="back" onclick="location.href=\'reservationList.html\'">返回列表</button>';
+    if (r.status === 'PENDING_PAYMENT') {
+        html = '<button class="pay" onclick="location.href=\'createPayment.html?reservationId=' + r.id + '\'">去支付</button>' +
+            '<button class="cancel" onclick="cancelOrder()">取消订单</button>' + html;
+    } else if (r.status === 'PAID') {
+        html = '<button class="edit" onclick="location.href=\'refundApply.html?reservationId=' + r.id + '\'">申请退款</button>' + html;
+    }
+    actions.innerHTML = html;
+}
+
+async function cancelOrder() {
+    if (!confirm('确定取消该订单？')) return;
+    var json = await apiPut('/reservations/' + orderId + '/cancel');
+    if (json.code !== 200) { alert(json.message || '取消失败'); return; }
+    alert('订单已取消');
+    loadDetail();
+}
+
+loadDetail();
+</script>
+</body>
+</html>

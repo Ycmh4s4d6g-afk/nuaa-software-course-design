@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/common.css">
+<title>注册账户 - 酒店推荐预订系统</title>
+
+<style>
+    body{margin:0;background:#f4f6fb;font-family:-apple-system,BlinkMac,"Segoe UI",Roboto;}
+    header{
+        background:linear-gradient(120deg,#3b82f6,#2563eb);
+        padding:14px 36px;color:white;
+        display:flex;justify-content:space-between;align-items:center;
+    }
+    header a{color:white;text-decoration:none;margin-left:18px;font-size:14px;}
+    header a:hover{opacity:.85;}
+
+    /* 注册容器 */
+    .container{
+        width:450px;margin:80px auto;
+        background:white;border-radius:20px;
+        padding:36px 42px 45px;
+        box-shadow:0 4px 18px rgba(0,0,0,.08);
+    }
+    .title{text-align:center;font-size:22px;font-weight:600;margin-bottom:8px;}
+    .sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:26px;}
+
+    /* 输入框区 */
+    .field{margin-bottom:18px;}
+    .field label{display:block;font-size:13px;color:#475569;margin-bottom:6px;}
+    .field input{
+        width:100%;padding:10px 14px;border-radius:8px;
+        border:1px solid #d4d4d8;font-size:14px;outline:none;
+    }
+    .field input:focus{
+        border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.25);
+    }
+
+    /* 注册按钮 */
+    .btn{
+        width:100%;padding:12px;border-radius:8px;border:none;
+        background:#2563eb;color:white;font-size:15px;
+        cursor:pointer;font-weight:500;margin-top:6px;
+    }
+    .btn:hover{filter:brightness(1.07);}
+
+    /* 底部提示 */
+    .links{text-align:center;margin-top:16px;font-size:13px;}
+    .links a{color:#2563eb;text-decoration:none;}
+    .links a:hover{text-decoration:underline;}
+</style>
+</head>
+
+<body>
+
+<!-- 顶部导航（保持系统一致性） -->
+<!-- 注册主体页面 -->
+<div class="container">
+    <div class="title">创建新账户</div>
+    <div class="sub">注册后可进行预订、收藏酒店、查看订单与评价</div>
+
+    <form onsubmit="event.preventDefault(); register();">
+        <div class="field">
+            <label>手机号（账号）</label>
+            <input type="text" id="phone" placeholder="请输入手机号">
+        </div>
+
+        <div class="field">
+            <label>设置登录密码</label>
+            <input type="password" id="pwd1" placeholder="至少6位密码">
+        </div>
+
+        <div class="field">
+            <label>再次确认密码</label>
+            <input type="password" id="pwd2" placeholder="请再次输入密码">
+        </div>
+
+        <button class="btn" type="submit">注册</button>
+    </form>
+
+    <div class="links">
+        已有账户？<a href="signin.html">点击登录</a>
+    </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+async function register() {
+    const phone = document.getElementById('phone').value.trim();
+    const p1 = document.getElementById('pwd1').value;
+    const p2 = document.getElementById('pwd2').value;
+
+    if (!phone) {
+        alert('请输入手机号');
+        return;
+    }
+    if (p1.length < 6) {
+        alert('密码至少6位');
+        return;
+    }
+    if (p1 !== p2) {
+        alert('两次密码不一致！请重新输入');
+        return;
+    }
+
+    try {
+        const json = await apiPost('/auth/register', {
+            username: '用户' + phone.slice(-4),
+            phone: phone,
+            password: p1
+        });
+        if (json.code !== 200) {
+            alert(json.message || '注册失败');
+            return;
+        }
+        alert('注册成功！请登录');
+        location.href = 'signin.html';
+    } catch (e) {
+        alert('无法连接后端，请检查 config.js 中的 API 地址及后端服务是否启动');
+    }
+}
+</script>
+
+    <script src="js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/common.css">
+<title>修改个人信息 - 酒店预订系统</title>
+<style>
+    body{margin:0;background:#f4f6fb;font-family:"Segoe UI",Roboto,"Noto Sans SC";}
+    .container{width:480px;margin:75px auto;background:white;padding:38px;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,.07);}
+    .title{text-align:center;font-size:22px;font-weight:600;margin-bottom:10px;}
+    .sub{text-align:center;font-size:13px;color:#64748b;margin-bottom:28px;}
+    .field{margin-bottom:18px;}
+    .field label{display:block;margin-bottom:6px;color:#475569;font-size:13px;}
+    .field input,.field select{width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;}
+    .btn{width:100%;padding:12px;font-size:15px;border-radius:8px;border:none;cursor:pointer;font-weight:500;margin-top:6px;}
+    .save{background:#22c55e;color:white;}
+    .back{background:#2563eb;color:white;}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="title">修改个人信息</div>
+    <p class="sub">更新保存后将覆盖当前账户资料</p>
+    <div class="field"><label>昵称</label><input type="text" id="username"></div>
+    <div class="field"><label>手机号（账号）</label><input type="text" id="phone"></div>
+    <div class="field"><label>邮箱（可选）</label><input type="text" id="email" placeholder="example@mail.com"></div>
+    <div class="field"><label>性别</label>
+        <select id="gender">
+            <option value="UNKNOWN">未知</option>
+            <option value="MALE">男</option>
+            <option value="FEMALE">女</option>
+        </select>
+    </div>
+    <button class="btn save" onclick="save()">💾 保存修改</button>
+    <button class="btn back" onclick="location.href='getUserInfo.html'">返回</button>
+</div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/common.js"></script>
+<script>
+async function loadProfile() {
+    if (!requireLogin()) return;
+    var json = await apiGetAuth('/users/me');
+    if (json.code !== 200) { alert(json.message || '加载失败'); return; }
+    var u = json.data;
+    document.getElementById('username').value = u.username || '';
+    document.getElementById('phone').value = u.phone || '';
+    document.getElementById('email').value = u.email || '';
+    document.getElementById('gender').value = u.gender || 'UNKNOWN';
+}
+
+async function save() {
+    var body = {
+        username: document.getElementById('username').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim() || null,
+        gender: document.getElementById('gender').value
+    };
+    if (!body.username || !body.phone) { alert('昵称和手机号不能为空'); return; }
+    try {
+        var json = await apiPut('/users/me', body);
+        if (json.code !== 200) { alert(json.message || '保存失败'); return; }
+        localStorage.setItem('username', json.data.username);
+        localStorage.setItem('phone', json.data.phone);
+        alert('信息已修改！');
+        location.href = 'getUserInfo.html';
+    } catch (e) { alert('无法连接后端'); }
+}
+
+loadProfile();
+</script>
+</body>
+</html>
