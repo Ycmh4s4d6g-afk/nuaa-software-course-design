@@ -212,7 +212,7 @@ CREATE TABLE notifications (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   user_id BIGINT UNSIGNED NOT NULL COMMENT '接收用户ID',
   reservation_id BIGINT UNSIGNED DEFAULT NULL COMMENT '关联预订ID',
-  notification_type ENUM('RESERVATION_SUCCESS','PAYMENT_SUCCESS','ORDER_CANCELLED','REFUND_PROCESSING','REFUND_SUCCESS','POST_APPROVED','POST_REJECTED','SYSTEM') NOT NULL DEFAULT 'SYSTEM' COMMENT '通知类型',
+  notification_type ENUM('RESERVATION_SUCCESS','PAYMENT_SUCCESS','ORDER_CANCELLED','REFUND_PROCESSING','REFUND_SUCCESS','POST_APPROVED','POST_REJECTED','SYSTEM','ORDER_CREATED','PAY_SUCCESS','ORDER_CONFIRMED','CHECKIN_REMINDER') NOT NULL DEFAULT 'SYSTEM' COMMENT '通知类型',
   channel ENUM('APP','SMS','EMAIL') NOT NULL DEFAULT 'APP' COMMENT '通知渠道',
   title VARCHAR(100) NOT NULL COMMENT '通知标题',
   content TEXT NOT NULL COMMENT '通知内容',
@@ -243,7 +243,13 @@ INSERT INTO hotels
 VALUES
 (1, '杭州西湖湖景酒店', '度假', '杭州', '杭州市西湖区北山街1号', '靠近西湖景区，适合旅游入住。', JSON_ARRAY('免费WiFi','停车场','早餐','湖景房'), '0571-88880001', 'images/hangzhou_xihu.jpg', 4.8, 399.00, 1),
 (2, '上海外滩商务酒店', '商务', '上海', '上海市黄浦区中山东一路88号', '靠近外滩和地铁站，适合商务出行。', JSON_ARRAY('免费WiFi','会议室','健身房'), '021-66660001', 'images/shanghai_waitan.jpg', 4.6, 499.00, 1),
-(3, '紫峰大厦城市酒店', '商务', '南京', '南京市鼓楼区中山北路1号', '位于城市中心，交通便利。', JSON_ARRAY('免费WiFi','停车场','餐厅'), '025-55550001', 'images/zijin_tower.jpg', 4.5, 359.00, 1);
+(3, '紫峰大厦城市酒店', '商务', '南京', '南京市鼓楼区中山北路1号', '位于城市中心，交通便利。', JSON_ARRAY('免费WiFi','停车场','餐厅'), '025-55550001', 'images/zijin_tower.jpg', 4.5, 359.00, 1),
+(4, '北京三里屯洲际酒店', '高档', '北京', '北京市朝阳区三里屯路1号', '潮流商圈核心，购物餐饮一应俱全。', JSON_ARRAY('免费WiFi','健身房','餐厅'), '010-65918888', 'images/beijing.jpg', 4.8, 899.00, 1),
+(5, '广州珠江新城W酒店', '豪华', '广州', '广州市天河区珠江新城', '珠江新城CBD，现代设计感十足。', JSON_ARRAY('免费WiFi','泳池','餐厅'), '020-66288888', 'images/guangzhou.jpg', 4.8, 1188.00, 1),
+(6, '深圳湾安达仕酒店', '高档', '深圳', '深圳市南山区科苑南路2600号', '深圳湾一线海景，品质住宿体验。', JSON_ARRAY('免费WiFi','海景房','早餐'), '0755-88889999', 'images/shenzhen.jpg', 4.6, 988.00, 1);
+
+-- 清理测试脏数据（若服务器上存在）
+-- DELETE FROM hotels WHERE hotel_name IN ('测试酒店', '无登录头');
 
 INSERT INTO room_types
 (id, hotel_id, room_type_name, bed_type, capacity, total_rooms, available_rooms, price, breakfast_included, description, status)
